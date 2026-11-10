@@ -1,0 +1,1070 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>COPYRIGHT HERO : 저작권 수호 작전</title>
+<style>
+:root{--pu:#7b5cff;--pu2:#4a2bd0;--co:#2f5bff;--co2:#1a3cc0;--mi:#2fe0b8;--mi2:#12a585;--pk:#ff5fae;--pk2:#cf3a86;--ye:#ffd23f;--ye2:#cf9a00;--ink:#251c5c;--soft:#f4f1ff}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;height:100%;overflow:hidden}
+html{font-size:clamp(14px,1.45vw,21px)}
+body{font-family:"Pretendard","Apple SD Gothic Neo","Noto Sans KR","Malgun Gothic","맑은 고딕",system-ui,sans-serif;color:var(--ink);background:#2a1f7a;-webkit-user-select:none;user-select:none;overscroll-behavior:none}
+input,textarea{-webkit-user-select:text;user-select:text;font-family:inherit}
+button{font-family:inherit;color:inherit}
+#app{position:fixed;inset:0;display:flex;flex-direction:column}
+#bg{position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden;transition:filter 1.5s}
+.sky{position:absolute;inset:0;background:radial-gradient(ellipse at 15% 8%,#ff8fd0aa 0,transparent 40%),radial-gradient(ellipse at 88% 18%,#5ff5d299 0,transparent 35%),linear-gradient(180deg,#3a1fa8 0%,#3f55ff 55%,#7b5cff 100%)}
+#bg svg.city{position:absolute;left:0;bottom:0;width:100%;height:60%}
+.floater{position:absolute;font-size:2.6rem;opacity:.55;animation:float 9s ease-in-out infinite;filter:drop-shadow(0 .4rem .6rem #0003)}
+@keyframes float{0%,100%{transform:translateY(0) rotate(-8deg)}50%{transform:translateY(-34px) rotate(8deg)}}
+#hud{position:relative;z-index:5;display:flex;align-items:center;gap:.55rem;padding:.45rem .8rem;background:rgba(22,14,66,.62);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);color:#fff;border-bottom:2px solid #ffffff22;min-height:4rem}
+#hud.hidden{display:none}
+.hud-av{width:3.1rem;height:3.1rem;border-radius:50%;background:#ffffff2a;display:grid;place-items:center;overflow:hidden;flex:none;border:2px solid #fff6}
+.hud-av svg{width:3.4rem;height:3.6rem;margin-top:.5rem}
+.hud-name{font-weight:900;line-height:1.15;font-size:1rem;white-space:nowrap}
+.hud-name small{display:block;font-size:.72rem;color:var(--mi);font-weight:800}
+.lv{background:linear-gradient(180deg,#ffe36e,#ffb800);color:#5a3a00;font-weight:900;border-radius:.8rem;padding:.15rem .55rem;box-shadow:0 .2rem 0 #b87d00;white-space:nowrap}
+.xpwrap{flex:0 1 8rem;min-width:4rem}
+.xpbar{height:.85rem;background:#ffffff26;border-radius:1rem;overflow:hidden}
+.xpbar i{display:block;height:100%;background:linear-gradient(90deg,var(--mi),var(--ye));border-radius:1rem;transition:width .7s}
+.xptxt{font-size:.66rem;opacity:.8;font-weight:700;text-align:center}
+.pill{background:#ffffff1f;border-radius:1rem;padding:.3rem .65rem;font-weight:900;white-space:nowrap;font-size:.95rem}
+.pill.combo{background:linear-gradient(90deg,#ff7a3d,#ff3d7f)}
+.hud-sp{flex:1}
+.hbtn{width:2.9rem;height:2.9rem;border-radius:.9rem;border:0;background:#ffffff26;color:#fff;font-size:1.25rem;box-shadow:0 .25rem 0 #0005;cursor:pointer;flex:none}
+.hbtn:active{transform:translateY(.2rem);box-shadow:none}
+.hbtn.on{background:var(--mi2)}
+#screen{position:relative;z-index:2;flex:1;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch}
+#fx{position:fixed;inset:0;pointer-events:none;z-index:900;overflow:hidden}
+.pt{position:absolute;width:12px;height:12px;border-radius:3px;margin:-6px 0 0 -6px;font-size:1.4rem;line-height:1}
+.combo-pop{position:fixed;left:50%;top:22%;transform:translateX(-50%);font-weight:900;color:#fff;-webkit-text-stroke:2px #c2185b;text-shadow:0 .3rem 0 #c2185b,0 .6rem 1rem #0005;z-index:950;pointer-events:none;white-space:nowrap}
+#toast{position:fixed;left:50%;bottom:1.4rem;transform:translateX(-50%);z-index:990;display:flex;flex-direction:column;gap:.5rem;align-items:center;pointer-events:none}
+.toast{background:#1d1748ee;color:#fff;padding:.8rem 1.4rem;border-radius:1.2rem;font-weight:800;font-size:1.1rem;box-shadow:0 .5rem 1.2rem #0005;animation:pop .35s both}
+#modal{position:fixed;inset:0;z-index:980;display:none;align-items:center;justify-content:center;background:#120c3acc;padding:1rem}
+#modal.show{display:flex}
+.mbox{background:#fff;border-radius:2rem;padding:1.6rem;max-width:min(44rem,94vw);max-height:90vh;overflow:auto;box-shadow:0 1rem 3rem #0008;animation:pop .4s cubic-bezier(.2,1.4,.4,1) both;text-align:center}
+.mbox h2{margin:.2rem 0 .8rem;font-size:1.8rem}
+.mrow{display:flex;gap:.8rem;justify-content:center;flex-wrap:wrap;margin-top:1rem}
+#rotate{display:none;position:fixed;top:.5rem;left:50%;transform:translateX(-50%);z-index:999;background:var(--ye);color:#5a3a00;border-radius:1rem;padding:.4rem 1rem;font-weight:900;pointer-events:none}
+@media (orientation:portrait) and (max-width:900px){#rotate{display:block;animation:fadeout 1s 5s forwards}}
+@keyframes fadeout{to{opacity:0}}
+/* buttons */
+.btn{--c1:#9b82ff;--c2:#6a48ff;--sh:#4527c9;font-weight:900;font-size:1.15rem;border:0;border-radius:1.1rem;padding:.75rem 1.4rem;min-height:3.4rem;color:#fff;background:linear-gradient(180deg,var(--c1),var(--c2));box-shadow:0 .42rem 0 var(--sh),0 .8rem 1.2rem rgba(0,0,0,.22);cursor:pointer;transition:transform .07s,box-shadow .07s,filter .2s;position:relative;text-shadow:0 .1rem 0 #0003;touch-action:manipulation}
+.btn:active:not(:disabled){transform:translateY(.36rem);box-shadow:0 .06rem 0 var(--sh),0 .2rem .4rem rgba(0,0,0,.25)}
+.btn:disabled{filter:grayscale(.8);opacity:.55;cursor:default}
+.btn.mint{--c1:#6bf7d7;--c2:#1fcaa2;--sh:#0f8c70;color:#063d31;text-shadow:none}
+.btn.pink{--c1:#ff8ac4;--c2:#ff4f9f;--sh:#c22d78}
+.btn.yellow{--c1:#ffe46a;--c2:#ffc21a;--sh:#c48c00;color:#5a3a00;text-shadow:none}
+.btn.blue{--c1:#5d86ff;--c2:#2f5bff;--sh:#1a3cc0}
+.btn.ghost{--c1:#ffffff;--c2:#ece8ff;--sh:#b5abe8;color:var(--ink);text-shadow:none}
+.btn.red{--c1:#ff8d8d;--c2:#ff5757;--sh:#c23434}
+.btn.sm{font-size:1rem;min-height:2.8rem;padding:.5rem 1rem}
+.btn.big{font-size:1.45rem;min-height:4.2rem;padding:.9rem 2.2rem;border-radius:1.4rem}
+.btn.huge{font-size:2.2rem;min-height:5.2rem;padding:1rem 3.4rem;border-radius:1.8rem}
+.pulse{animation:pulse 1.6s ease-in-out infinite}
+@keyframes pulse{0%,100%{filter:brightness(1)}50%{filter:brightness(1.15) drop-shadow(0 0 .8rem #fff8)}}
+/* anim */
+@keyframes pop{0%{transform:scale(.4);opacity:0}70%{transform:scale(1.06);opacity:1}100%{transform:scale(1)}}
+.in{animation:pop .45s cubic-bezier(.2,1.4,.4,1) both}
+@keyframes slideIn{from{opacity:0;transform:translateX(50px)}to{opacity:1;transform:none}}
+.screen-in{animation:slideIn .45s ease both}
+@keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-10px)}40%{transform:translateX(10px)}60%{transform:translateX(-7px)}80%{transform:translateX(7px)}}
+.shake{animation:shake .45s}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+.bob{animation:bob 2.4s ease-in-out infinite}
+@keyframes wig{0%,100%{transform:rotate(-10deg)}50%{transform:rotate(10deg)}}
+.wig{animation:wig 1s ease-in-out infinite}
+@keyframes runin{from{transform:translateX(220px);opacity:0}to{transform:none;opacity:1}}
+.runin{animation:runin .9s ease-out both}
+@keyframes spin{to{transform:rotate(360deg)}}
+.spin{animation:spin 6s linear infinite}
+/* layout */
+.wrapc{max-width:1200px;margin:0 auto;padding:1rem 1.2rem 3rem}
+.panel{background:#fff;border-radius:1.6rem;box-shadow:0 .5rem 0 #0000001a,0 1rem 2rem #0003;padding:1.2rem}
+.mission{min-height:100%}
+.mtop{display:flex;align-items:center;gap:.8rem;padding:.7rem 1.2rem;max-width:1200px;margin:0 auto}
+.mtitle{color:#fff;font-weight:900;font-size:1.25rem;text-shadow:0 .15rem 0 #0004;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.dots{flex:1;display:flex;gap:.35rem;justify-content:flex-end;flex-wrap:wrap}
+.dots i{width:1.05rem;height:1.05rem;border-radius:50%;background:#ffffff40;display:block}
+.dots i.done{background:var(--mi)}
+.dots i.now{background:var(--ye);box-shadow:0 0 0 .25rem #ffd23f55;transform:scale(1.2)}
+.stage{max-width:1200px;margin:0 auto 2rem;padding:1.4rem 1.6rem 2rem;background:#fbfaff;border-radius:2rem;box-shadow:0 1rem 2.4rem #0004;width:calc(100% - 2rem)}
+.stage.clear{background:transparent;box-shadow:none;padding:.5rem}
+.qhead{display:flex;align-items:flex-start;gap:.8rem;margin-bottom:1.1rem}
+.qtext{flex:1;font-size:1.5rem;font-weight:900;line-height:1.45;word-break:keep-all}
+.say{display:inline-flex;gap:.35rem;flex:none;vertical-align:middle}
+.sbtn{width:2.9rem;height:2.9rem;border-radius:50%;border:0;background:linear-gradient(180deg,#8f7bff,#5d3ff0);color:#fff;font-size:1.2rem;box-shadow:0 .25rem 0 #3c22b5;cursor:pointer;touch-action:manipulation}
+.sbtn:active{transform:translateY(.2rem);box-shadow:none}
+.sbtn.slow{background:linear-gradient(180deg,#6bf7d7,#1fcaa2);box-shadow:0 .25rem 0 #0f8c70}
+.nextrow{display:flex;justify-content:center;margin-top:1.4rem}
+.fb{display:none;margin-top:1rem;padding:.9rem 1.2rem;border-radius:1.2rem;font-size:1.25rem;font-weight:800;align-items:center;gap:.7rem;line-height:1.5;word-break:keep-all}
+.fb.show{display:flex;animation:pop .35s both}
+.fb>span:first-child{flex:1}
+.fb.ok{background:#e1fff6;color:#0a6450;border:3px solid var(--mi)}
+.fb.no{background:#fff5d9;color:#7a5200;border:3px solid var(--ye)}
+/* dialog */
+.dlg{display:grid;grid-template-columns:minmax(9rem,22%) 1fr;gap:1rem;align-items:end}
+.dwho svg{width:100%;max-height:16rem;filter:drop-shadow(0 .6rem .8rem #0004)}
+.bubble{background:#fff;border-radius:1.8rem;padding:1.2rem 1.5rem;position:relative;box-shadow:0 .5rem 0 #0000001a,0 1rem 2rem #0003;margin-bottom:2rem}
+.bubble:before{content:"";position:absolute;left:-1rem;bottom:2rem;border:1rem solid transparent;border-right-color:#fff;border-left:0}
+.bname{display:inline-block;background:var(--pu);color:#fff;font-weight:900;border-radius:1rem;padding:.2rem .8rem;margin-bottom:.5rem}
+.btext{font-size:1.55rem;font-weight:800;line-height:1.55;min-height:4.5rem;word-break:keep-all}
+.brow{display:flex;justify-content:space-between;align-items:center;margin-top:.8rem;gap:1rem}
+.scene{min-height:13rem;border-radius:2rem;margin-bottom:1rem;display:flex;align-items:center;justify-content:center;background:linear-gradient(180deg,#ffffffd9,#efeaffd9);box-shadow:inset 0 0 0 4px #ffffff88;overflow:hidden;position:relative}
+.sc{display:flex;align-items:center;justify-content:center;gap:1rem;flex-wrap:wrap;padding:1rem;width:100%;min-height:13rem;position:relative}
+.sc.night{background:linear-gradient(180deg,#1b1450,#3a2a9a);border-radius:2rem;color:#fff}
+.sc.gray{filter:grayscale(1);background:#cfcfd8;border-radius:2rem}
+.sc.colorful{background:linear-gradient(120deg,#ffe3f1,#e0fff7,#fff5c9);border-radius:2rem}
+.e{font-size:3.6rem;display:inline-block;animation:pop .5s both;animation-delay:var(--d,0s)}
+.e.big{font-size:5.4rem}
+.sc .bub{background:#fff;color:var(--ink);border-radius:1.2rem;padding:.6rem 1rem;font-weight:900;font-size:1.3rem;box-shadow:0 .3rem 0 #0002;animation:pop .5s .4s both}
+.sc .tag{position:absolute;top:1rem;left:1.2rem;font-weight:900;color:#fff;background:#0006;border-radius:1rem;padding:.2rem .8rem}
+.shieldc{width:7rem;height:7rem;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff7b0,#ffc21a);display:grid;place-items:center;font-size:4.5rem;font-weight:900;color:#5a3be6;box-shadow:0 0 0 .6rem #ffd23f66,0 0 3rem #ffd23f;animation:pop .6s .3s both}
+.arrow{font-size:2.5rem;font-weight:900;color:var(--pu)}
+/* options */
+.opts{display:grid;grid-template-columns:repeat(auto-fit,minmax(16rem,1fr));gap:.9rem}
+.opt{background:#fff;color:var(--ink);border-radius:1.2rem;padding:.9rem 1.1rem;font-size:1.22rem;font-weight:800;box-shadow:0 .4rem 0 #c9c2f0,0 .6rem 1rem #0001;display:flex;gap:.8rem;align-items:center;min-height:4.6rem;border:3px solid #e6e1ff;text-align:left;cursor:pointer;line-height:1.4;word-break:keep-all;touch-action:manipulation;transition:transform .07s}
+.opt:active:not(:disabled){transform:translateY(.3rem);box-shadow:0 .1rem 0 #c9c2f0}
+.opt .ic{font-size:2.2rem;flex:none}
+.opt.ok{border-color:var(--mi);background:#e1fff6;box-shadow:0 .4rem 0 var(--mi2)}
+.opt.no{border-color:#ff9a9a;background:#fff0f0;opacity:.75;animation:shake .45s}
+.opt:disabled{cursor:default}
+.opts.big .opt{flex-direction:column;text-align:center;justify-content:center;min-height:9rem}
+.opts.big .opt .ic{font-size:3.4rem}
+.qpic{display:flex;justify-content:center;gap:1rem;padding:1rem;border-radius:1.5rem;background:var(--soft);margin-bottom:1rem;flex-wrap:wrap}
+/* hint */
+.hintbox{margin-top:1rem;display:flex;flex-direction:column;gap:.5rem;align-items:flex-start}
+.hint{background:#fffbe6;border:3px dashed var(--ye);border-radius:1rem;padding:.6rem 1rem;font-size:1.15rem;font-weight:700;display:flex;gap:.6rem;align-items:center;flex-wrap:wrap;word-break:keep-all}
+.hint .hpic{font-size:2.4rem}
+/* drag */
+.pile{position:sticky;top:.4rem;z-index:4;box-shadow:0 .4rem 1rem #0002;display:flex;flex-wrap:wrap;gap:.7rem;justify-content:center;padding:1rem;border-radius:1.4rem;background:var(--soft);min-height:5rem;margin-bottom:1rem}
+.card{background:#fff;border-radius:1rem;padding:.65rem 1rem;font-weight:800;font-size:1.18rem;box-shadow:0 .38rem 0 #c9c2f0,0 .5rem .8rem #0001;touch-action:none;cursor:grab;min-height:3.4rem;display:flex;align-items:center;gap:.5rem;border:3px solid #e6e1ff;word-break:keep-all;line-height:1.35}
+.card .ic{font-size:1.7rem}
+.card.sel{border-color:var(--ye);box-shadow:0 0 0 .3rem #ffd23f88,0 .38rem 0 #c9c2f0;transform:translateY(-.2rem)}
+.card.placed{cursor:default;border-color:var(--mi);background:#effffa;box-shadow:0 .2rem 0 var(--mi2)}
+.dragghost{position:fixed!important;z-index:1000;pointer-events:none;transform:scale(1.08) rotate(-3deg);box-shadow:0 1.2rem 2rem rgba(0,0,0,.35)!important;margin:0!important;opacity:.95}
+.placeholder{opacity:.25}
+.drop.over{outline:4px dashed var(--ye);outline-offset:3px;filter:brightness(1.05)}
+.syl{width:4.4rem;height:5.2rem;justify-content:center;font-size:2.2rem;padding:0}
+.wcard{font-size:1.5rem;padding:.6rem 1.3rem}
+.slot{min-width:4.4rem;height:5.2rem;border:3px dashed #b2a6f2;border-radius:1rem;display:inline-flex;align-items:center;justify-content:center;vertical-align:middle;background:#f6f4ff;margin:0 .15rem;font-size:2.2rem;font-weight:900;color:var(--pu2);padding:0 .3rem}
+.slot.wslot{min-width:7rem}
+.slot.filled{border:3px solid var(--mi);background:#e1fff6;animation:pop .35s both}
+.sents{display:flex;flex-direction:column;gap:.9rem}
+.sent.solved{box-shadow:0 0 0 4px var(--mi),0 .8rem 1.4rem #0002}
+.srow{display:flex;align-items:center;gap:.8rem;justify-content:space-between}
+.sline{font-size:1.5rem;font-weight:800;line-height:2.4;word-break:keep-all}
+.mean{color:#6b62a8;font-weight:700;margin-top:.3rem}
+.bins{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.bin{min-height:12rem;border-radius:1.5rem;padding:1rem;border:4px dashed #ffffffcc;display:flex;flex-wrap:wrap;align-content:flex-start;gap:.5rem;box-shadow:inset 0 0 0 2px #0001}
+.binlbl{width:100%;font-weight:900;font-size:1.3rem;color:#fff;text-shadow:0 .15rem 0 #0003;margin-bottom:.3rem}
+.oslots{display:flex;flex-direction:column;gap:.6rem}
+.oslot{display:flex;align-items:center;gap:.7rem;min-height:4.2rem;border:3px dashed #b2a6f2;border-radius:1.1rem;padding:.4rem;background:#f8f6ff}
+.onum{width:2.6rem;height:2.6rem;border-radius:50%;background:var(--pu);color:#fff;font-weight:900;display:grid;place-items:center;flex:none;font-size:1.2rem}
+/* tap grid */
+.tgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(11rem,1fr));gap:.9rem}
+.tile{background:#fff;border:3px solid #e6e1ff;border-radius:1.3rem;padding:1rem .6rem;box-shadow:0 .4rem 0 #c9c2f0;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:.4rem;touch-action:manipulation;word-break:keep-all}
+.tile:active{transform:translateY(.3rem);box-shadow:0 .1rem 0 #c9c2f0}
+.tile .ti{font-size:3rem}
+.tile .tt{font-size:1.12rem;font-weight:800;line-height:1.35;text-align:center}
+.tile.found{border-color:var(--mi);background:#e1fff6;box-shadow:0 .4rem 0 var(--mi2);animation:pop .4s both}
+.tile.found:after{content:"✔";position:absolute}
+.tile.nope{animation:shake .45s;border-color:#ff9a9a}
+.tcount{font-weight:900;font-size:1.2rem;color:var(--pu2);margin-bottom:.7rem}
+/* write */
+.write{width:100%;font-size:1.5rem;font-weight:700;border:4px solid #c9c2f0;border-radius:1.3rem;padding:1rem 1.2rem;min-height:8rem;resize:vertical;color:var(--ink);background:#fffef8;line-height:1.6;outline:none}
+.write:focus{border-color:var(--pu)}
+.chips{display:flex;flex-wrap:wrap;gap:.5rem;margin:.6rem 0}
+.chip{border:0;background:#ece7ff;color:var(--pu2);font-weight:800;font-size:1.05rem;border-radius:2rem;padding:.55rem 1rem;box-shadow:0 .25rem 0 #c9bff5;cursor:pointer;touch-action:manipulation}
+.chip:active{transform:translateY(.2rem);box-shadow:none}
+.chip.on{background:var(--mi);color:#063d31;box-shadow:0 .25rem 0 var(--mi2)}
+.example{background:#eef6ff;border-left:.5rem solid var(--co);border-radius:1rem;padding:.7rem 1rem;font-weight:700;margin-bottom:.8rem;font-size:1.1rem}
+.wbar{display:flex;align-items:center;justify-content:space-between;gap:1rem;margin-top:.8rem;flex-wrap:wrap}
+.cnt{font-weight:800;color:#8a82bf}
+/* worlds */
+.doors{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem}
+.door{border:0;border-radius:2rem;padding:1.4rem;min-height:13rem;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.5rem;font-weight:900;box-shadow:0 .6rem 0 #0003;touch-action:manipulation;position:relative}
+.door:active{transform:translateY(.4rem);box-shadow:0 .1rem 0 #0003}
+.door.wa{background:linear-gradient(140deg,#ff9fd2,#ffe46a,#6bf7d7);color:#3d1d6b}
+.door.wb{background:linear-gradient(140deg,#8d8a99,#c5c3cf);color:#2f2d38}
+.door .dicon{font-size:4rem}
+.door .dname{font-size:1.35rem}
+.door .dstate{background:#fff9;border-radius:1rem;padding:.25rem .9rem;font-size:1rem}
+.door.visited .dstate{background:var(--mi);color:#063d31}
+.wview{display:none;margin-top:1.2rem;border-radius:2rem;padding:1.3rem;text-align:center}
+.wview.show{display:block;animation:pop .45s both}
+.wview.wa{background:linear-gradient(140deg,#fff0f8,#fffbe0,#e6fff8)}
+.wview.wb{background:#e3e2e8}
+.wview.wb .wpic{filter:grayscale(1) brightness(.9)}
+.wtitle{font-weight:900;font-size:1.3rem;margin-bottom:.5rem}
+.wpic{font-size:1rem;min-height:8rem;display:flex;align-items:center;justify-content:center;gap:.6rem}
+.wpic .e{font-size:5rem}
+.wcaprow{display:flex;align-items:center;justify-content:center;gap:.8rem;margin:.6rem 0}
+.wcap{font-size:1.5rem;font-weight:900;word-break:keep-all}
+.wdots{color:var(--pu);font-size:1.1rem;margin-bottom:.6rem;letter-spacing:.2rem}
+.ctable{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:1.2rem}
+.ctable>div{border-radius:1.4rem;padding:1rem 1.2rem;font-weight:800;font-size:1.12rem;line-height:1.8}
+.ctable h4{margin:0 0 .4rem;font-size:1.25rem}
+/* case */
+.casehead{display:flex;align-items:center;gap:.8rem;margin-bottom:1rem;font-size:1.5rem}
+.casetag{background:linear-gradient(90deg,var(--pk),var(--pu));color:#fff;font-weight:900;padding:.3rem 1rem;border-radius:1rem;font-size:1.1rem}
+.comic{display:grid;grid-template-columns:repeat(3,1fr);gap:.9rem}
+.cpanel{background:#fff;border:4px solid var(--ink);border-radius:1.2rem;padding:.8rem;position:relative;cursor:pointer;animation:pop .5s both;display:flex;flex-direction:column;align-items:center;gap:.4rem;min-height:15rem;box-shadow:.4rem .4rem 0 var(--ink);touch-action:manipulation}
+.cpanel:active{transform:translate(.2rem,.2rem);box-shadow:.2rem .2rem 0 var(--ink)}
+.cnum{position:absolute;top:-.8rem;left:-.8rem;width:2.2rem;height:2.2rem;border-radius:50%;background:var(--ye);border:3px solid var(--ink);font-weight:900;display:grid;place-items:center}
+.cpic{display:flex;gap:.2rem;align-items:center;justify-content:center;flex-wrap:wrap;min-height:5rem}
+.cpic .e{font-size:3rem}
+.cbub{background:#fff;border:3px solid var(--ink);border-radius:1.2rem;padding:.3rem .7rem;font-weight:900;font-size:1.02rem;text-align:center;word-break:keep-all}
+.ccap{font-size:1rem;font-weight:700;color:#5a5190;text-align:center;word-break:keep-all;line-height:1.4}
+.magn{position:absolute;right:.4rem;top:.3rem;font-size:1.8rem;animation:bob 1.6s infinite}
+.cpanel.seen .magn{display:none}
+.cpanel.seen{border-color:var(--mi2);box-shadow:.4rem .4rem 0 var(--mi2)}
+.guide{text-align:center;font-weight:900;font-size:1.2rem;color:var(--pu2);margin:1rem 0 .6rem}
+.clueboard{background:linear-gradient(180deg,#fff7d6,#ffefb0);border-radius:1.3rem;padding:.8rem 1rem;border:3px solid #f0d36a}
+.clueboard.flash{animation:shake .5s;box-shadow:0 0 0 .5rem #ffd23f99}
+.cbt{font-weight:900;margin-bottom:.4rem}
+.clues{display:flex;flex-wrap:wrap;gap:.5rem;min-height:2.5rem}
+.clue{background:#fff;border-radius:.8rem;padding:.4rem .8rem;font-weight:800;box-shadow:0 .2rem 0 #e2c55a;word-break:keep-all}
+.verdict{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:1.2rem}
+.verdict .btn{font-size:1.6rem;min-height:5rem}
+.why{margin-top:1rem;background:linear-gradient(135deg,#efe9ff,#e3fbff);border-radius:1.4rem;padding:1.1rem 1.3rem;font-size:1.3rem;font-weight:800;line-height:1.6;display:flex;gap:.8rem;align-items:center;word-break:keep-all}
+.why b{color:var(--pu2)}
+/* reading */
+.ptitle{display:flex;align-items:center;gap:.7rem;font-weight:900;font-size:1.3rem;margin-bottom:.8rem}
+.pnum{background:var(--co);color:#fff;border-radius:1rem;padding:.25rem .9rem}
+.passage{font-size:1.6rem;line-height:2;font-weight:600;word-break:keep-all;background:#fffdf5;border:3px solid #f1e6c2}
+.prow{display:flex;align-items:center;gap:.8rem;margin-bottom:.5rem;font-size:1.05rem;font-weight:800;color:#8a6d00}
+.sent-s{border-radius:.5rem;padding:.1rem .1rem;transition:background .2s}
+.sent-s.tappable{cursor:pointer;background:linear-gradient(transparent 70%,#ffe46a66 70%)}
+.sent-s.hl{background:#ffe46a;box-shadow:0 0 0 .2rem #ffd23f}
+.sent-s.nope{background:#ffd6d6}
+.cover{display:grid;grid-template-columns:1.2fr 1fr;gap:1rem;align-items:stretch}
+.hot{cursor:pointer;border-radius:1.4rem;border:4px dashed #b2a6f2;padding:1rem;display:flex;align-items:center;justify-content:center;position:relative;touch-action:manipulation;text-align:center}
+.hot:after{content:"👆";position:absolute;right:.5rem;top:.3rem;font-size:1.6rem;animation:bob 1.4s infinite}
+.hot.seen{border:4px solid var(--mi);background:#effffa}
+.hot.seen:after{content:"✔";color:var(--mi2);font-weight:900;animation:none}
+.cover-title{font-size:2.1rem;font-weight:900;background:linear-gradient(135deg,#fff6d6,#ffe9f4);grid-column:1/-1}
+.cover-pic{min-height:10rem;background:#eef4ff;flex-wrap:wrap;gap:.3rem}
+.cover-pic .e{font-size:3.6rem}
+.cover-tag{font-size:1.5rem;font-weight:900;background:#f3eeff;color:var(--pu2)}
+.notes{display:flex;flex-direction:column;gap:.6rem;margin-top:1rem}
+.note{background:#fff;border-left:.5rem solid var(--pu);border-radius:1rem;padding:.7rem 1rem;font-weight:800;font-size:1.15rem;display:flex;gap:.6rem;align-items:center;box-shadow:0 .3rem .6rem #0001;word-break:keep-all}
+.note span{flex:1}
+.checks{display:grid;gap:.6rem;margin-bottom:1rem}
+.chk{display:flex;align-items:center;gap:.8rem;background:#fff;border:3px solid #e6e1ff;border-radius:1.1rem;padding:.7rem 1rem;font-weight:800;font-size:1.12rem;cursor:pointer;text-align:left;touch-action:manipulation}
+.chk .box{width:2.2rem;height:2.2rem;border-radius:.6rem;border:3px solid #b2a6f2;display:grid;place-items:center;flex:none;font-size:1.3rem}
+.chk.on{border-color:var(--mi);background:#effffa}
+.chk.on .box{background:var(--mi);border-color:var(--mi2)}
+.refl{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.refl .rh{font-weight:900;font-size:1.2rem;padding:.3rem 1rem;border-radius:.6rem;display:inline-block;margin-bottom:.4rem}
+/* word lab */
+.wlab{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem}
+.wl{border:0;border-radius:1.6rem;padding:1.2rem;cursor:pointer;min-height:11rem;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.4rem;color:#fff;box-shadow:0 .5rem 0 #0003;touch-action:manipulation}
+.wl:active{transform:translateY(.35rem);box-shadow:0 .1rem 0 #0003}
+.wl .we{font-size:3.4rem}
+.wl .ww{font-size:2.4rem;font-weight:900;text-shadow:0 .2rem 0 #0003}
+.wl.opened:after{content:"✔ 학습 완료";background:#fff;color:var(--mi2);font-weight:900;border-radius:1rem;padding:.1rem .7rem;font-size:.95rem}
+.wdetail{margin-top:1.2rem}
+.wbig{display:flex;align-items:center;gap:1rem;flex-wrap:wrap}
+.wbig .w{font-size:3.4rem;font-weight:900;color:var(--pu2)}
+.wbig .pr{font-size:1.5rem;font-weight:800;color:#8a82bf}
+.wrow{font-size:1.25rem;font-weight:700;line-height:1.6;margin:.5rem 0;display:flex;gap:.6rem;align-items:center;word-break:keep-all}
+.wrow b{background:#ece7ff;color:var(--pu2);border-radius:.6rem;padding:.1rem .6rem;flex:none}
+.jamo{display:flex;gap:1rem;flex-wrap:wrap;margin-top:.6rem}
+.jsy{display:flex;gap:.3rem;align-items:center;background:var(--soft);border-radius:1rem;padding:.5rem .8rem}
+.jsy .j{width:2.8rem;height:3.2rem;border-radius:.7rem;background:#fff;border:3px solid var(--pk);display:grid;place-items:center;font-size:1.7rem;font-weight:900;animation:pop .4s both}
+.jsy .eq{font-size:1.6rem;font-weight:900;color:var(--pk2);margin:0 .3rem}
+/* studio */
+.studio{display:grid;grid-template-columns:1.45fr 1fr;gap:1rem}
+.cv{width:100%;aspect-ratio:800/560;background:#fff;border-radius:1.2rem;border:4px solid #c9c2f0;touch-action:none;display:block;cursor:crosshair}
+.tools{display:flex;flex-wrap:wrap;gap:.45rem;margin-top:.6rem;align-items:center}
+.sw{width:2.8rem;height:2.8rem;border-radius:50%;border:4px solid #fff;box-shadow:0 0 0 2px #c9c2f0;cursor:pointer;touch-action:manipulation}
+.sw.on,.tb.on{box-shadow:0 0 0 4px var(--ye)}
+.tb{min-width:2.9rem;height:2.9rem;border-radius:.9rem;border:0;background:#ece7ff;font-size:1.4rem;cursor:pointer;font-weight:900;padding:0 .5rem;touch-action:manipulation}
+.form label{display:block;font-weight:900;margin:.7rem 0 .3rem;font-size:1.1rem}
+.inp{width:100%;font-size:1.4rem;font-weight:700;border:4px solid #c9c2f0;border-radius:1rem;padding:.7rem 1rem;outline:none;color:var(--ink)}
+.inp:focus{border-color:var(--pu)}
+.artcard{background:linear-gradient(160deg,#fff,#f6f2ff);border-radius:1.4rem;padding:.8rem;box-shadow:0 .5rem 0 #d8d0ff,0 .8rem 1.6rem #0002;border:3px solid #fff;position:relative;text-align:left}
+.artcard img{width:100%;border-radius:1rem;display:block;background:#fff;aspect-ratio:800/560;object-fit:cover}
+.artcard .at{font-size:1.35rem;font-weight:900;margin:.5rem 0 .2rem}
+.artcard .ad{font-size:1rem;color:#5a5190;font-weight:700;word-break:keep-all}
+.artcard .aby{display:flex;justify-content:space-between;align-items:center;margin-top:.5rem;font-weight:900;font-size:.95rem;color:var(--pu2)}
+.artcard .typ{position:absolute;top:1.2rem;left:1.2rem;background:#fffd;border-radius:1rem;padding:.1rem .7rem;font-weight:900;font-size:.9rem}
+.cmark{background:var(--ye);color:#5a3a00;border-radius:1rem;padding:.1rem .6rem}
+.gallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(15rem,1fr));gap:1.2rem}
+/* boss */
+.arena{display:flex;align-items:center;gap:1.2rem;background:linear-gradient(135deg,#2a1a6e,#5b1f7a);border-radius:1.6rem;padding:.8rem 1.2rem;margin-bottom:1.2rem;color:#fff;position:relative;overflow:hidden}
+.bossbox{width:8rem;flex:none}
+.bossbox svg{width:100%}
+.bossbox.hit{animation:hit .7s}
+@keyframes hit{0%{transform:none;filter:none}20%{transform:translateX(16px) rotate(8deg);filter:brightness(3)}40%{transform:translateX(-12px) rotate(-6deg)}60%{transform:translateX(8px)}100%{transform:none}}
+.bossinfo{flex:1}
+.bname2{font-weight:900;font-size:1.3rem}
+.hpbar{height:1.5rem;border-radius:1rem;background:#ffffff26;overflow:hidden;margin:.4rem 0;border:2px solid #fff6}
+.hpbar i{display:block;height:100%;background:linear-gradient(90deg,#ff3d7f,#ffb13d);transition:width .9s cubic-bezier(.3,1.4,.5,1)}
+.atk{font-weight:800;opacity:.9}
+.laser{position:absolute;left:0;top:50%;height:.8rem;width:100%;background:linear-gradient(90deg,transparent,var(--mi),#fff,var(--ye));border-radius:1rem;transform-origin:right center;animation:laser .5s ease-out forwards;box-shadow:0 0 1.5rem var(--mi)}
+@keyframes laser{from{transform:scaleX(0);opacity:1}70%{transform:scaleX(1);opacity:1}to{opacity:0}}
+.redflash{position:fixed;inset:0;background:#ff3d7f55;z-index:800;pointer-events:none;animation:fadeout .6s forwards}
+/* title */
+.title{min-height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:1.5rem;gap:1rem}
+.logo{text-align:center;line-height:.95}
+.logo1{font-size:3.4rem;font-weight:900;letter-spacing:.2rem;color:#fff;-webkit-text-stroke:2px #3a1fa8;text-shadow:0 .35rem 0 #3a1fa8,0 .7rem 1.2rem #0006}
+.logo2{font-size:6.2rem;font-weight:900;letter-spacing:.4rem;background:linear-gradient(180deg,#fff59a,#ffd23f 45%,#ff9f1c);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 .4rem 0 #b0306f) drop-shadow(0 .8rem 1.2rem #0007)}
+.logo3{display:inline-block;margin-top:.5rem;font-size:1.5rem;font-weight:900;color:#fff;background:linear-gradient(90deg,var(--pk),var(--pu));padding:.35rem 1.4rem;border-radius:2rem;box-shadow:0 .3rem 0 #0004}
+.title-main{display:flex;gap:2rem;align-items:center;flex-wrap:wrap;justify-content:center}
+.hero-wrap{text-align:center;position:relative}
+.hero-wrap svg{width:14rem;filter:drop-shadow(0 1rem 1rem #0005)}
+.name-tag{background:#fff;border-radius:1rem;padding:.3rem 1rem;font-weight:900;display:inline-block;box-shadow:0 .3rem 0 #c9c2f0}
+.tinfo{min-width:21rem;display:flex;flex-direction:column;gap:.6rem}
+.trow{display:flex;justify-content:space-between;align-items:center;font-weight:900;font-size:1.2rem;gap:1rem}
+.prog{height:1.1rem;background:#ece7ff;border-radius:1rem;overflow:hidden}
+.prog i{display:block;height:100%;background:linear-gradient(90deg,var(--mi),var(--co),var(--pk));border-radius:1rem}
+.today{background:linear-gradient(135deg,#fff6d6,#ffe9f4);border-radius:1rem;padding:.6rem .9rem;font-weight:900}
+.today small{display:block;color:#b0306f;font-size:.85rem}
+.title-btns{display:flex;gap:1rem;flex-wrap:wrap;justify-content:center}
+/* map */
+.maphead{display:flex;align-items:center;justify-content:space-between;gap:1rem;max-width:1200px;margin:0 auto;padding:.8rem 1.2rem 0;flex-wrap:wrap}
+.goal{background:#fff;border-radius:1.4rem;padding:.6rem 1.2rem;font-weight:900;font-size:1.2rem;box-shadow:0 .4rem 0 #0002;display:flex;align-items:center;gap:.6rem}
+.mapbox{position:relative;width:min(calc(100% - 1rem),calc((100dvh - 10rem)*1.78));aspect-ratio:16/9;margin:.6rem auto 1rem;border-radius:2rem;background:linear-gradient(160deg,#ffffff22,#ffffff0d);border:3px solid #ffffff33}
+.mapbox svg.path{position:absolute;inset:0;width:100%;height:100%}
+.node{position:absolute;transform:translate(-50%,-50%);border:0;background:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:.2rem;width:8.5rem;touch-action:manipulation;padding:0}
+.ncirc{width:5.6rem;height:5.6rem;border-radius:50%;display:grid;place-items:center;font-size:2.6rem;background:linear-gradient(180deg,#fff,#e6e0ff);box-shadow:0 .45rem 0 #4527c9,0 .8rem 1.2rem #0004;border:4px solid #fff;position:relative;transition:transform .1s}
+.node:active .ncirc{transform:translateY(.3rem)}
+.node.boss .ncirc{width:6.6rem;height:6.6rem;background:linear-gradient(180deg,#b1ff7a,#3fd16a);box-shadow:0 .45rem 0 #1f7a3a,0 .8rem 1.2rem #0004}
+.node.locked .ncirc{filter:grayscale(1);opacity:.75}
+.node.locked .ncirc:after{content:"🔒";position:absolute;font-size:1.8rem;right:-.6rem;bottom:-.4rem}
+.node.done .ncirc{border-color:var(--ye);background:linear-gradient(180deg,#fff7c2,#ffd23f)}
+.node.now .ncirc{animation:ring 1.4s infinite}
+@keyframes ring{0%{box-shadow:0 .45rem 0 #4527c9,0 0 0 0 #ffd23fcc}100%{box-shadow:0 .45rem 0 #4527c9,0 0 0 1.4rem #ffd23f00}}
+.nlbl{background:#fff;border-radius:.9rem;padding:.2rem .6rem;font-weight:900;font-size:.92rem;text-align:center;box-shadow:0 .25rem 0 #0002;line-height:1.25;word-break:keep-all}
+.nlbl small{display:block;color:var(--pu);font-size:.75rem}
+.nstars{font-size:1rem;letter-spacing:.05rem;text-shadow:0 .1rem 0 #0004}
+.nowtag{position:absolute;top:-1.4rem;background:var(--pk);color:#fff;font-weight:900;border-radius:1rem;padding:.05rem .6rem;font-size:.85rem;animation:bob 1.2s infinite;z-index:2}
+/* reward */
+.reward{min-height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1rem;padding:1.5rem;text-align:center}
+.clear-t{font-size:4.2rem;font-weight:900;color:#fff;-webkit-text-stroke:2px #c2185b;text-shadow:0 .4rem 0 #c2185b,0 .8rem 1.4rem #0006}
+.bigstars{display:flex;gap:1rem;font-size:4.6rem}
+.bigstars span{animation:pop .5s both;filter:drop-shadow(0 .4rem .4rem #0005)}
+.bigstars span.off{filter:grayscale(1) opacity(.35)}
+.chest{font-size:7rem;cursor:pointer;border:0;background:none;animation:wig .6s ease-in-out infinite;filter:drop-shadow(0 .8rem 1rem #0006);touch-action:manipulation}
+.chest.open{animation:pop .5s both}
+.rlist{display:flex;gap:.8rem;flex-wrap:wrap;justify-content:center}
+.ritem{background:#fff;border-radius:1.2rem;padding:.7rem 1.1rem;font-weight:900;font-size:1.2rem;box-shadow:0 .4rem 0 #c9c2f0;animation:pop .45s both}
+/* collection */
+.tabs{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1rem}
+.tab{border:0;border-radius:1.1rem;padding:.7rem 1.2rem;font-weight:900;font-size:1.1rem;background:#ece7ff;color:var(--pu2);cursor:pointer;box-shadow:0 .3rem 0 #c9bff5;touch-action:manipulation}
+.tab.on{background:var(--pu);color:#fff;box-shadow:0 .3rem 0 var(--pu2)}
+.bgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(10rem,1fr));gap:1rem}
+.badge{border-radius:1.4rem;padding:1rem .6rem;text-align:center;background:linear-gradient(180deg,#fff7c2,#ffe27a);box-shadow:0 .4rem 0 #d9b200;font-weight:900}
+.badge .bi{font-size:3rem}
+.badge.off{background:#eee;box-shadow:0 .4rem 0 #ccc;filter:grayscale(1);opacity:.6}
+.skin{border-radius:1.4rem;padding:.8rem;text-align:center;background:#fff;border:4px solid #e6e1ff;font-weight:900;display:flex;flex-direction:column;align-items:center;gap:.4rem}
+.skin svg{width:7rem}
+.skin.on{border-color:var(--mi)}
+.anote{background:#fff;border-radius:1.2rem;padding:1rem;margin-bottom:.9rem;border:3px solid #e6e1ff}
+.anote .aq{font-weight:900;color:var(--pu2);margin-bottom:.4rem;word-break:keep-all}
+.anote textarea{min-height:5rem;font-size:1.25rem}
+.statg{display:grid;grid-template-columns:repeat(auto-fill,minmax(12rem,1fr));gap:1rem}
+.stat{background:var(--soft);border-radius:1.2rem;padding:1rem;text-align:center;font-weight:900}
+.stat b{display:block;font-size:2.2rem;color:var(--pu2)}
+/* ending */
+.cert{max-width:56rem;margin:1rem auto;text-align:center;border:.6rem double var(--ye);background:linear-gradient(160deg,#fffdf2,#fff3fa)}
+.cert h1{font-size:3rem;margin:.2rem 0;color:var(--pu2)}
+.cert .who{font-size:2.2rem;font-weight:900;margin:.6rem 0}
+.cert p{font-size:1.3rem;font-weight:700;line-height:1.7;word-break:keep-all}
+.myexp{text-align:left;margin-top:1rem;display:grid;gap:.7rem}
+.myexp div{background:#fff;border-radius:1rem;padding:.8rem 1rem;border-left:.5rem solid var(--mi);font-weight:700;font-size:1.15rem;word-break:keep-all}
+.myexp b{color:var(--pu2);display:block}
+@media (max-width:820px){
+ .dlg{grid-template-columns:7rem 1fr}.comic{grid-template-columns:1fr}.cpanel{min-height:auto}
+ .studio,.cover,.refl,.ctable{grid-template-columns:1fr}.wlab{grid-template-columns:1fr}
+ .logo2{font-size:4rem}.logo1{font-size:2.2rem}.pill.opt,.xpwrap{display:none}
+}
+@media (prefers-reduced-motion:reduce){*{animation-duration:.01s!important;animation-iteration-count:1!important}}
+</style>
+</head>
+<body>
+<div id="app">
+ <div id="bg"></div>
+ <header id="hud" class="hidden"></header>
+ <main id="screen"></main>
+</div>
+<div id="fx"></div>
+<div id="toast"></div>
+<div id="modal"></div>
+<div id="rotate">📱 태블릿을 가로로 돌리면 더 크게 볼 수 있어요</div>
+<script>
+'use strict';
+{const _ap=Element.prototype.append;Element.prototype.append=function(...a){return _ap.apply(this,a.filter(x=>x!=null&&x!==false));};const _pp=Element.prototype.prepend;Element.prototype.prepend=function(...a){return _pp.apply(this,a.filter(x=>x!=null&&x!==false));};}
+/* ================= 유틸 ================= */
+const $=(s,r=document)=>r.querySelector(s);
+function h(tag,attrs,...kids){const el=document.createElement(tag);attrs=attrs||{};for(const k in attrs){const v=attrs[k];if(v==null||v===false)continue;if(k==='class')el.className=v;else if(k==='style')el.style.cssText=v;else if(k==='html')el.innerHTML=v;else if(k.startsWith('on')&&typeof v==='function')el.addEventListener(k.slice(2),v);else el.setAttribute(k,v);}
+ kids.flat(3).forEach(c=>{if(c==null||c===false)return;el.append(c.nodeType?c:document.createTextNode(String(c)));});return el;}
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[a[i],a[j]]=[a[j],a[i]];}return a;};
+const pick=a=>a[Math.random()*a.length|0];
+function mulberry(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
+function picHTML(s){if(s.includes('<'))return s;let seg;try{seg=[...new Intl.Segmenter('ko',{granularity:'grapheme'}).segment(s)].map(x=>x.segment);}catch(e){seg=Array.from(s);}
+ return seg.filter(c=>c.trim()).map((c,i)=>`<span class="e" style="--d:${(i*.12).toFixed(2)}s">${c}</span>`).join('');}
+const fmt=t=>String(t).replace(/\{name\}/g,S.name||'꼬마');
+
+/* ================= 저장 ================= */
+const SKEY='copyrightHero_save_v1';
+const DEF={name:'',xp:0,coins:0,stars:{},done:{},badges:[],skins:['basic'],skin:'basic',answers:{},gallery:[],stats:{c:0,t:0},weak:{},voice:true,slow:false,sound:true,seenIntro:false,bestCombo:0};
+function load(){try{const d=JSON.parse(localStorage.getItem(SKEY)||'null');return Object.assign(JSON.parse(JSON.stringify(DEF)),d||{});}catch(e){return JSON.parse(JSON.stringify(DEF));}}
+let S=load();
+function save(){try{localStorage.setItem(SKEY,JSON.stringify(S));}catch(e){
+ if(S.gallery.length>2){S.gallery=S.gallery.slice(0,2);try{localStorage.setItem(SKEY,JSON.stringify(S));toast('저장 공간이 부족해서 오래된 작품을 정리했어요');}catch(_){}}}}
+
+/* ================= 소리 ================= */
+let AC=null;
+function tone(fs,dur=.12,type='sine',vol=.06){if(!S.sound)return;try{AC=AC||new(window.AudioContext||window.webkitAudioContext)();if(AC.state==='suspended')AC.resume();const t=AC.currentTime;
+ fs.forEach((f,i)=>{const o=AC.createOscillator(),g=AC.createGain();o.type=type;o.frequency.value=f;const s=t+i*dur;g.gain.setValueAtTime(0,s);g.gain.linearRampToValueAtTime(vol,s+.015);g.gain.exponentialRampToValueAtTime(.0001,s+dur*1.6);o.connect(g);g.connect(AC.destination);o.start(s);o.stop(s+dur*1.8);});}catch(e){}}
+const SFX={tap:()=>tone([700],.05,'triangle',.035),good:()=>tone([660,880,1175],.08,'triangle',.06),bad:()=>tone([330,247],.12,'sine',.045),coin:()=>tone([1320,1760],.05,'square',.025),win:()=>tone([523,659,784,1047,1319],.1,'triangle',.07),hit:()=>tone([180,110],.09,'sawtooth',.04),lv:()=>tone([523,784,1047,1568],.09,'triangle',.07)};
+
+/* ================= 음성(TTS) ================= */
+let VOICE=null,lastSay='';
+function loadVoice(){try{const vs=speechSynthesis.getVoices();VOICE=vs.find(v=>/^ko/i.test(v.lang))||null;}catch(e){}}
+if('speechSynthesis' in window){loadVoice();speechSynthesis.onvoiceschanged=loadVoice;}
+const cleanT=t=>String(t).replace(/<[^>]+>/g,'').replace(/\p{Extended_Pictographic}|️|‍/gu,'').replace(/[「」©]/g,'').replace(/_{2,}|\[ *\]/g,' 빈칸 ').trim();
+function speak(t,slow){if(!t)return;lastSay=t;if(!('speechSynthesis' in window))return;try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(cleanT(t));u.lang='ko-KR';u.rate=slow?0.62:(S.slow?0.78:1);u.pitch=1.08;if(VOICE)u.voice=VOICE;speechSynthesis.speak(u);}catch(e){}}
+function autoSpeak(t){if(S.voice)setTimeout(()=>speak(t),280);}
+function sayBtns(t){const get=()=>typeof t==='function'?t():t;return h('span',{class:'say'},
+ h('button',{class:'sbtn',title:'듣기',onclick:e=>{e.stopPropagation();speak(get());}},'🔊'),
+ h('button',{class:'sbtn slow',title:'천천히 듣기',onclick:e=>{e.stopPropagation();speak(get(),true);}},'🐢'));}
+
+/* ================= 효과 ================= */
+function burst(x,y,n=16,chars){const fx=$('#fx');const cols=['#ffd23f','#ff5fae','#2fe0b8','#7b5cff','#5aa2ff'];n=Math.min(n,60);
+ for(let i=0;i<n;i++){const p=h('span',{class:'pt'},chars?pick(chars):'');if(!chars)p.style.background=pick(cols);else{p.style.background='none';p.style.width='auto';}
+  p.style.left=x+'px';p.style.top=y+'px';fx.append(p);const a=Math.random()*Math.PI*2,d=60+Math.random()*160;
+  const an=p.animate([{transform:'translate(0,0) scale(1)',opacity:1},{transform:`translate(${Math.cos(a)*d}px,${Math.sin(a)*d+50}px) scale(.4) rotate(${Math.random()*540}deg)`,opacity:0}],{duration:700+Math.random()*600,easing:'cubic-bezier(.2,.8,.3,1)'});an.onfinish=()=>p.remove();}}
+function rectC(el){if(!el||!el.getBoundingClientRect)return[innerWidth/2,innerHeight/2];const r=el.getBoundingClientRect();return[r.left+r.width/2,r.top+r.height/2];}
+function flyCoin(from){const tgt=$('#hudCoin');if(!tgt)return;const[x,y]=rectC(from),[tx,ty]=rectC(tgt);const c=h('span',{class:'pt',style:'background:none;width:auto;font-size:1.8rem'},'🪙');c.style.left=x+'px';c.style.top=y+'px';$('#fx').append(c);
+ c.animate([{transform:'translate(0,0) scale(1)'},{transform:`translate(${(tx-x)/2}px,${(ty-y)/2-80}px) scale(1.3)`},{transform:`translate(${tx-x}px,${ty-y}px) scale(.6)`}],{duration:750,easing:'ease-in-out'}).onfinish=()=>{c.remove();SFX.coin();tgt.animate([{transform:'scale(1.3)'},{transform:'scale(1)'}],{duration:250});};}
+function comboPop(){const n=combo;const el=h('div',{class:'combo-pop',style:`font-size:${2.2+Math.min(n,8)*.35}rem`},`🔥 COMBO x${n}`);document.body.append(el);
+ el.animate([{transform:'translateX(-50%) scale(.3)',opacity:0},{transform:'translateX(-50%) scale(1.15)',opacity:1,offset:.3},{transform:'translateX(-50%) scale(1)',opacity:1,offset:.75},{transform:'translateX(-50%) translateY(-40px)',opacity:0}],{duration:1300}).onfinish=()=>el.remove();}
+function toast(msg){const t=h('div',{class:'toast'},msg);$('#toast').append(t);setTimeout(()=>{t.animate([{opacity:1},{opacity:0}],{duration:300}).onfinish=()=>t.remove();},2400);}
+function shakeEl(el){if(!el)return;el.classList.remove('shake');void el.offsetWidth;el.classList.add('shake');}
+let modalClose=null;
+function modal(content,opt={}){const m=$('#modal');m.innerHTML='';const box=h('div',{class:'mbox'},content);m.append(box);m.classList.add('show');
+ const close=()=>{m.classList.remove('show');m.innerHTML='';modalClose=null;};modalClose=close;if(opt.closable!==false)m.onclick=e=>{if(e.target===m)close();};else m.onclick=null;return close;}
+
+/* ================= 진행/보상 ================= */
+const XP_PER=120;let combo=0;
+const level=()=>1+Math.floor(S.xp/XP_PER);
+function rank(){if(S.done.m7)return'저작권 수호국 정식 요원';const l=level();return l>=9?'베테랑 수사관':l>=7?'고급 수사관':l>=5?'중급 수사관':l>=3?'초급 수사관':'수습 수사관';}
+function addXP(n){const b=level();S.xp+=n;if(level()>b)setTimeout(levelUp,700);}
+function levelUp(){SFX.lv();burst(innerWidth/2,innerHeight/2,50,['⭐','✨','🪙']);const el=h('div',{class:'combo-pop',style:'top:40%;font-size:3.4rem;-webkit-text-stroke:2px #4527c9;text-shadow:0 .3rem 0 #4527c9,0 .6rem 1rem #0005'},`LEVEL UP! Lv.${level()}`);document.body.append(el);
+ el.animate([{transform:'translateX(-50%) scale(.2)',opacity:0},{transform:'translateX(-50%) scale(1.1)',opacity:1,offset:.25},{transform:'translateX(-50%) scale(1)',opacity:1,offset:.8},{opacity:0}],{duration:2000}).onfinish=()=>el.remove();speak(`레벨 업! 이제 레벨 ${level()}, ${rank()}이야!`);}
+function good(o={}){combo++;S.stats.c++;S.stats.t++;if(combo>S.bestCombo)S.bestCombo=combo;const mult=Math.min(combo,5);addXP(o.small?5:10);addCoins((o.small?2:5)*mult);
+ if(o.review&&o.concept&&S.weak[o.concept]>0)S.weak[o.concept]--;SFX.good();const[x,y]=rectC(o.at);burst(x,y,10+Math.min(combo,8)*5,combo>=4?['⭐','✨','💎','🪙']:null);flyCoin(o.at);
+ if(combo>=2)comboPop();if(combo>=5&&!S.badges.includes('combo5')){S.badges.push('combo5');setTimeout(()=>toast('🔥 새 뱃지! 콤보 마스터'),900);}
+ save();renderHUD();}
+function addCoins(n){S.coins+=n;}
+function bad(o={}){combo=0;S.stats.t++;if(RUN)RUN.mistakes++;if(o.concept)S.weak[o.concept]=(S.weak[o.concept]||0)+1;SFX.bad();shakeEl(o.el);if(RUN&&RUN.m.id==='m7')bossAttack();save();renderHUD();}
+
+/* ================= 드래그 ================= */
+let SEL=null;
+function dropAt(x,y){const els=document.elementsFromPoint(x,y);for(const e of els){const d=e.closest&&e.closest('.drop');if(d)return d;}return null;}
+function makeDrop(zone,fn){zone.classList.add('drop');zone._accept=fn;zone.addEventListener('click',()=>{if(SEL&&document.body.contains(SEL)&&!SEL.dataset.locked){const c=SEL;SEL.classList.remove('sel');SEL=null;fn(zone,c);}});}
+function draggable(el){el.addEventListener('pointerdown',e=>{if(el.dataset.locked||(e.button&&e.button>0))return;e.preventDefault();const r=el.getBoundingClientRect();const sx=e.clientX,sy=e.clientY;let moved=false,ghost=null,over=null,lastX=sx,lastY=sy;const scr=$('#screen');const auto=setInterval(()=>{if(!moved)return;const H=innerHeight;let d=0;if(lastY>H-90)d=14;else if(lastY<140)d=-14;if(d){scr.scrollTop+=d;const t=dropAt(lastX,lastY);if(t!==over){over&&over.classList.remove('over');over=t;over&&over.classList.add('over');}}},30);
+ try{el.setPointerCapture(e.pointerId);}catch(_){}
+ const move=ev=>{const dx=ev.clientX-sx,dy=ev.clientY-sy;if(!moved&&Math.hypot(dx,dy)>8){moved=true;ghost=el.cloneNode(true);ghost.classList.add('dragghost');ghost.classList.remove('sel');Object.assign(ghost.style,{width:r.width+'px',height:r.height+'px',left:r.left+'px',top:r.top+'px'});document.body.append(ghost);el.classList.add('placeholder');if(SEL){SEL.classList.remove('sel');SEL=null;}SFX.tap();}
+  if(moved){lastY=ev.clientY;lastX=ev.clientX;ghost.style.left=(r.left+dx)+'px';ghost.style.top=(r.top+dy)+'px';const t=dropAt(ev.clientX,ev.clientY);if(t!==over){over&&over.classList.remove('over');over=t;over&&over.classList.add('over');}}};
+ const up=ev=>{clearInterval(auto);el.removeEventListener('pointermove',move);el.removeEventListener('pointerup',up);el.removeEventListener('pointercancel',up);over&&over.classList.remove('over');
+  if(moved){const t=ev.type==='pointercancel'?null:dropAt(ev.clientX,ev.clientY);ghost.remove();el.classList.remove('placeholder');if(t&&t._accept)t._accept(t,el);}
+  else{if(SEL===el){el.classList.remove('sel');SEL=null;}else{SEL&&SEL.classList.remove('sel');SEL=el;el.classList.add('sel');SFX.tap();toast('👉 이제 놓을 곳을 터치하세요');}}};
+ el.addEventListener('pointermove',move);el.addEventListener('pointerup',up);el.addEventListener('pointercancel',up);});}
+
+/* ================= 캐릭터 SVG ================= */
+let GID=0;
+const SKINS=[{id:'basic',name:'기본 수사관',hat:'#2f5bff',coat:'#7b5cff',acc:'🔍',price:0},{id:'mint',name:'민트 탐정',hat:'#12a585',coat:'#2fe0b8',acc:'🔎',price:0,unlock:'미션 3 클리어 보상'},{id:'pink',name:'핑크 스타',hat:'#ff4f9f',coat:'#ff8cc6',acc:'⭐',price:80},{id:'artist',name:'창작 아티스트',hat:'#ff8a1c',coat:'#ffd23f',acc:'🎨',price:0,unlock:'미션 6 클리어 보상'},{id:'night',name:'밤의 요원',hat:'#1d1748',coat:'#3b2c8f',acc:'🌙',price:150},{id:'gold',name:'황금 수호자',hat:'#c99700',coat:'#ffd23f',acc:'👑',price:0,unlock:'최종 보스 격파 보상'}];
+function playerSVG(id,cls=''){const k=SKINS.find(s=>s.id===id)||SKINS[0];return h('span',{html:`<svg class="${cls}" viewBox="0 0 200 230" xmlns="http://www.w3.org/2000/svg">
+<ellipse cx="100" cy="222" rx="58" ry="7" fill="rgba(0,0,0,.2)"/>
+<path d="M45 222 Q45 150 100 150 Q155 150 155 222Z" fill="${k.coat}"/>
+<path d="M100 152 L84 222 M100 152 L116 222" stroke="#ffffff66" stroke-width="5"/>
+<polygon points="100,170 105,182 118,182 108,190 112,203 100,195 88,203 92,190 82,182 95,182" fill="#ffd23f" stroke="#c99700" stroke-width="2"/>
+<circle cx="100" cy="98" r="56" fill="#ffe2c6"/>
+<ellipse cx="78" cy="104" rx="9" ry="12" fill="#251c5c"/><ellipse cx="122" cy="104" rx="9" ry="12" fill="#251c5c"/>
+<circle cx="81" cy="99" r="3.5" fill="#fff"/><circle cx="125" cy="99" r="3.5" fill="#fff"/>
+<ellipse cx="66" cy="122" rx="10" ry="6" fill="#ff9fc5" opacity=".8"/><ellipse cx="134" cy="122" rx="10" ry="6" fill="#ff9fc5" opacity=".8"/>
+<path d="M88 126 Q100 138 112 126" stroke="#251c5c" stroke-width="4.5" fill="none" stroke-linecap="round"/>
+<path d="M42 74 Q100 0 158 74 Z" fill="${k.hat}"/>
+<rect x="34" y="66" width="132" height="15" rx="7.5" fill="${k.hat}" stroke="#0003" stroke-width="2"/>
+<rect x="70" y="56" width="60" height="9" rx="4" fill="#ffffff55"/>
+<text x="168" y="200" font-size="46" text-anchor="middle">${k.acc}</text>
+</svg>`}).firstChild;}
+function owlSVG(cls='bob'){return h('span',{html:`<svg class="${cls}" viewBox="0 0 200 230" xmlns="http://www.w3.org/2000/svg">
+<ellipse cx="100" cy="222" rx="56" ry="7" fill="rgba(0,0,0,.2)"/>
+<ellipse cx="38" cy="150" rx="17" ry="38" fill="#5a3be6" transform="rotate(18 38 150)"/><ellipse cx="162" cy="150" rx="17" ry="38" fill="#5a3be6" transform="rotate(-18 162 150)"/>
+<ellipse cx="100" cy="140" rx="70" ry="78" fill="#8a6cff"/>
+<ellipse cx="100" cy="162" rx="46" ry="52" fill="#e3d9ff"/>
+<path d="M78 165 q8 8 16 0 M106 185 q8 8 16 0 M84 195 q8 8 16 0" stroke="#b9a8ff" stroke-width="3" fill="none"/>
+<circle cx="72" cy="108" r="29" fill="#fff"/><circle cx="128" cy="108" r="29" fill="#fff"/>
+<circle cx="75" cy="111" r="14" fill="#251c5c"/><circle cx="125" cy="111" r="14" fill="#251c5c"/>
+<circle cx="80" cy="105" r="5" fill="#fff"/><circle cx="130" cy="105" r="5" fill="#fff"/>
+<circle cx="72" cy="108" r="32" fill="none" stroke="#ffd23f" stroke-width="5"/><circle cx="128" cy="108" r="32" fill="none" stroke="#ffd23f" stroke-width="5"/>
+<path d="M92 132 L100 148 L108 132Z" fill="#ff9f1c"/>
+<path d="M44 66 Q100 18 156 66 Z" fill="#2f5bff"/><rect x="36" y="60" width="128" height="14" rx="7" fill="#1a3cc0"/>
+<polygon points="100,30 104,40 115,40 106,46 110,57 100,50 90,57 94,46 85,40 96,40" fill="#ffd23f"/>
+</svg>`}).firstChild;}
+function virusSVG(cls='bob'){const id='vg'+(GID++);let sp='';for(let i=0;i<12;i++){const a=i/12*Math.PI*2,x1=110+Math.cos(a)*68,y1=110+Math.sin(a)*68,x2=110+Math.cos(a)*96,y2=110+Math.sin(a)*96;sp+=`<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="#5bd14a" stroke-width="9" stroke-linecap="round"/><circle cx="${x2}" cy="${y2}" r="10" fill="#b1ff7a" stroke="#3a9a2e" stroke-width="3"/>`;}
+ return h('span',{html:`<svg class="${cls}" viewBox="0 0 220 220" xmlns="http://www.w3.org/2000/svg"><defs><radialGradient id="${id}" cx=".35" cy=".3"><stop offset="0" stop-color="#d4ff9e"/><stop offset=".6" stop-color="#5bd14a"/><stop offset="1" stop-color="#7b3fd0"/></radialGradient></defs>
+<g class="spin" style="transform-origin:110px 110px">${sp}</g>
+<circle cx="110" cy="110" r="72" fill="url(#${id})" stroke="#3a1f7a" stroke-width="4"/>
+<circle cx="80" cy="150" r="9" fill="#ffffff44"/><circle cx="148" cy="70" r="6" fill="#ffffff55"/>
+<rect x="72" y="50" width="76" height="22" rx="8" fill="#251c5c"/><text x="110" y="67" font-size="16" font-weight="900" text-anchor="middle" fill="#b1ff7a" font-family="sans-serif">CTRL+C</text>
+<ellipse cx="85" cy="100" rx="17" ry="19" fill="#fff"/><ellipse cx="135" cy="100" rx="17" ry="19" fill="#fff"/>
+<circle cx="89" cy="104" r="9" fill="#251c5c"/><circle cx="131" cy="104" r="9" fill="#251c5c"/>
+<path d="M64 80 L102 92 M156 80 L118 92" stroke="#251c5c" stroke-width="7" stroke-linecap="round"/>
+<path d="M76 136 Q110 166 144 136 Z" fill="#251c5c"/><path d="M86 139 l6 9 l6 -8 l6 9 l6 -9 l6 9 l6 -9 l6 8" stroke="#fff" stroke-width="3" fill="none"/>
+</svg>`}).firstChild;}
+const CH={chief:{n:()=>'부엉 반장',s:()=>owlSVG()},virus:{n:()=>'복제 바이러스 카피몬',s:()=>virusSVG()},me:{n:()=>(S.name||'신입')+' 수사관',s:()=>playerSVG(S.skin,'bob')}};
+
+/* ================= 배경 ================= */
+function buildBG(){const rnd=mulberry(11);let s='<svg class="city" viewBox="0 0 1600 600" preserveAspectRatio="xMidYMax slice" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="bB" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#6a58f0"/><stop offset="1" stop-color="#2a1f7a"/></linearGradient><linearGradient id="bF" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3b2cb0"/><stop offset="1" stop-color="#170f4a"/></linearGradient></defs>';
+ let x=0;while(x<1600){const w=60+rnd()*90,hh=200+rnd()*260;s+=`<rect x="${x.toFixed(0)}" y="${(600-hh).toFixed(0)}" width="${w.toFixed(0)}" height="${hh.toFixed(0)}" rx="8" fill="url(#bB)" opacity=".75"/>`;x+=w+6;}
+ s+='<rect x="735" y="150" width="130" height="450" rx="16" fill="#2b1f8f"/><circle cx="800" cy="128" r="58" fill="#ffd23f"/><text x="800" y="152" font-size="70" text-anchor="middle" font-weight="900" fill="#5a3be6" font-family="sans-serif">©</text>';
+ x=-20;const cols=['#ff5fae','#2fe0b8','#ffd23f','#5aa2ff','#b18cff'];while(x<1600){const w=80+rnd()*110,hh=110+rnd()*210,c=cols[Math.floor(rnd()*5)];if(x>690&&x<880){x+=w;continue;}
+  s+=`<rect x="${x.toFixed(0)}" y="${(600-hh).toFixed(0)}" width="${w.toFixed(0)}" height="${hh.toFixed(0)}" rx="10" fill="url(#bF)"/><rect x="${x.toFixed(0)}" y="${(600-hh).toFixed(0)}" width="${w.toFixed(0)}" height="8" rx="4" fill="${c}"/>`;
+  for(let wy=600-hh+24;wy<575;wy+=30)for(let wx=x+14;wx<x+w-20;wx+=26)if(rnd()>.4)s+=`<rect x="${wx.toFixed(0)}" y="${wy.toFixed(0)}" width="12" height="16" rx="3" fill="${c}" opacity="${(.35+rnd()*.6).toFixed(2)}"/>`;x+=w+10;}
+ s+='</svg>';const bg=$('#bg');bg.innerHTML='<div class="sky"></div>'+s;
+ const ic=['🎨','🎵','📚','📷','🎬','🎤','✏️','🎹','🖼️','💡','🎧','📝'];ic.forEach((e,i)=>{bg.append(h('span',{class:'floater',style:`left:${(4+i*8+rnd()*3).toFixed(1)}%;top:${(6+rnd()*42).toFixed(1)}%;animation-delay:${(-rnd()*9).toFixed(1)}s;font-size:${(2+rnd()*1.6).toFixed(1)}rem`},e));});updateBG();}
+function updateBG(){const n=MISSIONS.filter(m=>S.done[m.id]).length;$('#bg').style.filter=`saturate(${(.25+.75*n/MISSIONS.length).toFixed(2)})`;}
+
+/* ================= 공통 단계 부품 ================= */
+let BOSSHIT=null;
+function qhead(t){t=fmt(t);autoSpeak(t);return h('div',{class:'qhead'},h('div',{class:'qtext'},t),sayBtns(t));}
+function nextBtn(st,done,label){if(st.querySelector('.nextbtn'))return;const b=h('button',{class:'btn mint big nextbtn in pulse'},label||(BOSSHIT?'⚡ 정화 빔 발사!':'다음 ▶'));
+ b.onclick=()=>{if(b.disabled)return;b.disabled=true;SFX.tap();if(BOSSHIT){const f=BOSSHIT;BOSSHIT=null;f(done);}else done();};st.append(h('div',{class:'nextrow'},b));setTimeout(()=>{try{b.scrollIntoView({behavior:'smooth',block:'nearest'});}catch(e){}},200);}
+function showExp(fb,t,type,sp=true){fb.innerHTML='';fb.className='fb show '+type;fb.append(h('span',{},t),sayBtns(t));if(sp)speak(t);}
+function hintBox(hs){let n=0;const list=h('div',{class:'hintbox'});const labels=['🖼️ 그림 힌트','🔑 핵심 단어','🦉 반장님 설명','📚 예시 상황'];
+ const btn=h('button',{class:'btn yellow sm'},`💡 힌트 보기 (0/${hs.length})`);
+ function more(){if(n>=hs.length){toast('힌트를 모두 봤어! 너는 할 수 있어 💪');return;}const t=hs[n];
+  list.append(h('div',{class:'hint in'},h('b',{},labels[n]),n===0?h('span',{class:'hpic'},t):h('span',{},t),n>0?sayBtns(t):null));if(n===2)speak(t);n++;btn.textContent=`💡 힌트 보기 (${n}/${hs.length})`;}
+ btn.onclick=()=>{SFX.tap();more();};list.prepend(btn);return{el:list,more};}
+
+/* 대화 */
+function D(lines){return(st,done)=>{st.classList.add('clear');let k=0;const scene=h('div',{class:'scene'});const who=h('div',{class:'dwho'});const name=h('div',{class:'bname'});const txt=h('div',{class:'btext'});const sb=h('span');
+ const nb=h('button',{class:'btn mint'},'다음 ▶');const bubble=h('div',{class:'bubble'},name,txt,h('div',{class:'brow'},sb,nb));st.append(scene,h('div',{class:'dlg'},who,bubble));
+ function show(){const L=lines[k];const c=CH[L.who||'chief'];who.innerHTML='';who.append(c.s());name.textContent=c.n();const t=fmt(L.t);txt.textContent=t;sb.innerHTML='';sb.append(sayBtns(t));
+  if('scene' in L){scene.innerHTML='';if(L.scene){scene.style.display='';scene.append(h('div',{html:typeof L.scene==='function'?L.scene():L.scene,style:'width:100%'}));}else scene.style.display='none';}
+  if(k===0&&!('scene' in L))scene.style.display='none';
+  bubble.classList.remove('in');void bubble.offsetWidth;bubble.classList.add('in');nb.textContent=k===lines.length-1?(L.end||'좋아! ▶'):'다음 ▶';autoSpeak(t);}
+ nb.onclick=()=>{SFX.tap();k++;if(k>=lines.length){nb.disabled=true;done();}else show();};show();};}
+
+/* 선택 문제 */
+function Q(o){return(st,done)=>{st.append(qhead(o.q));if(o.pic)st.append(h('div',{class:'qpic in',html:picHTML(o.pic)}));const hb=o.hints?hintBox(o.hints):null;const fb=h('div',{class:'fb'});
+ const opts=h('div',{class:'opts'+(o.big?' big':'')});let solved=false;
+ (o.keep?o.opts:shuffle(o.opts)).forEach(op=>{const b=h('button',{class:'opt'},op.icon?h('span',{class:'ic'},op.icon):null,h('span',{},fmt(op.t)));
+  b.onclick=()=>{if(solved||b.disabled)return;if(op.ok){solved=true;b.classList.add('ok');[...opts.children].forEach(x=>x.disabled=true);good({at:b,concept:o.concept,review:o.review});
+    showExp(fb,'⭕ '+fmt(op.fb||o.exp||'정답이야!'),'ok');if(o.save){S.answers[o.save]={q:fmt(o.q),a:fmt(op.t)};save();}if(o.after)o.after(st,op);nextBtn(st,done);}
+   else{b.classList.add('no');b.disabled=true;bad({el:b,concept:o.concept});showExp(fb,'🤔 '+(op.fb||'다시 생각해 볼까? 힌트를 봐도 좋아!'),'no');hb&&hb.more();}};opts.append(b);});
+ st.append(opts,fb);if(hb)st.append(hb.el);};}
+
+/* 분류 드래그 */
+function Sort(o){return(st,done)=>{st.append(qhead(o.q));st.append(h('div',{class:'mean',style:'margin:-.5rem 0 .7rem'},'✋ 카드를 손가락으로 끌어서 놓아요. (카드를 누른 뒤 상자를 눌러도 돼요)'));
+ const pile=h('div',{class:'pile'}),bins=h('div',{class:'bins'}),fb=h('div',{class:'fb'});let left=o.cards.length;
+ o.bins.forEach(b=>{const z=h('div',{class:'bin',style:`background:${b.bg}`},h('div',{class:'binlbl'},b.label));
+  makeDrop(z,(zone,card)=>{const c=card._d;if(card.dataset.locked)return;if(c.bin===b.key){card.classList.remove('sel');card.dataset.locked=1;card.classList.add('placed');zone.append(card);good({at:card,small:true,concept:c.concept,review:o.review});
+    showExp(fb,'⭕ '+(c.why||'맞아!'),'ok',false);left--;if(left===0){showExp(fb,'⭕ '+(o.end||'모두 정확하게 분류했어! 멋져!'),'ok');nextBtn(st,done);}}
+   else{bad({el:card,concept:c.concept});showExp(fb,'🤔 '+(c.hint||'다시 생각해 볼까?'),'no');}});bins.append(z);});
+ shuffle(o.cards).forEach(c=>{const el=h('div',{class:'card'},c.icon?h('span',{class:'ic'},c.icon):null,c.t);el._d=c;draggable(el);pile.append(el);});st.append(pile,bins,fb);};}
+
+/* 순서 맞추기 */
+function Order(o){return(st,done)=>{st.append(qhead(o.q));const slots=h('div',{class:'oslots'}),pile=h('div',{class:'pile'}),fb=h('div',{class:'fb'});let left=o.items.length;const hb=o.hints?hintBox(o.hints):null;
+ o.items.forEach((t,i)=>{const s=h('div',{class:'oslot'},h('span',{class:'onum'},i+1));makeDrop(s,(z,card)=>{if(z.dataset.filled||card.dataset.locked)return;
+  if(card._i===i){z.dataset.filled=1;card.dataset.locked=1;card.classList.add('placed');card.classList.remove('sel');z.append(card);good({at:card,small:true});left--;if(left===0){showExp(fb,'⭕ '+(o.exp||'순서를 완벽하게 맞혔어!'),'ok');nextBtn(st,done);}}
+  else{bad({el:card,concept:o.concept});showExp(fb,'🤔 '+(o.hint||'이 카드는 다른 자리야. 흐름을 다시 생각해 봐!'),'no');hb&&hb.more();}});slots.append(s);});
+ shuffle(o.items.map((t,i)=>({t,i}))).forEach(d=>{const c=h('div',{class:'card'},d.t);c._i=d.i;draggable(c);pile.append(c);});st.append(pile,slots,fb);if(hb)st.append(hb.el);};}
+
+/* 조립(글자/낱말) */
+function Assemble(o){return(st,done)=>{st.append(qhead(o.q));const pool=h('div',{class:'pile'}),list=h('div',{class:'sents'}),fb=h('div',{class:'fb'});let left=o.items.length;const hb=o.hints?hintBox(o.hints):null;
+ o.items.forEach(it=>{let need=it.ans.length;const row=h('div',{class:'sent panel'});const line=h('div',{class:'sline'},h('span',{},it.pre));
+  it.ans.forEach(tok=>{const sl=h('span',{class:'slot'+(o.word?' wslot':'')});makeDrop(sl,(z,card)=>{if(z.dataset.filled)return;
+   if(card._t===tok){z.dataset.filled=1;z.textContent=tok;z.classList.add('filled');if(SEL===card)SEL=null;card.remove();SFX.coin();need--;
+     if(need===0){row.classList.add('solved');good({at:row,concept:o.concept,review:o.review});const full=it.pre+it.ans.join('')+it.post;showExp(fb,'⭕ '+full,'ok');left--;if(left===0)nextBtn(st,done);}}
+   else{bad({el:card,concept:'word'});showExp(fb,'🤔 '+(it.hint||'뜻을 다시 떠올려 봐! 아래 뜻풀이가 단서야.'),'no');hb&&hb.more();}});line.append(sl);});
+  line.append(h('span',{},it.post));row.append(h('div',{class:'srow'},line,sayBtns(it.pre+' 빈칸 '+it.post)));if(it.mean)row.append(h('div',{class:'mean'},'↳ '+it.mean));list.append(row);});
+ shuffle(o.pool).forEach(t=>{const c=h('div',{class:o.word?'card wcard':'card syl'},t);c._t=t;draggable(c);pool.append(c);});
+ st.append(h('div',{class:'mean',style:'margin:-.5rem 0 .6rem'},o.board||'✋ 카드를 끌어서 빈칸에 넣어요.'),pool,list,fb);if(hb)st.append(hb.el);};}
+
+/* 터치해서 찾기 */
+function TapFind(o){return(st,done)=>{st.append(qhead(o.q));const grid=h('div',{class:'tgrid'}),fb=h('div',{class:'fb'});const need=o.items.filter(x=>x.ok).length;let got=0;
+ const cnt=h('div',{class:'tcount'},`🔍 찾은 개수: 0 / ${need}`);const hb=o.hints?hintBox(o.hints):null;
+ shuffle(o.items).forEach(it=>{const b=h('button',{class:'tile'},h('div',{class:'ti'},it.icon||''),h('div',{class:'tt'},it.t));
+  b.onclick=()=>{if(b.classList.contains('found')||got>=need)return;if(it.ok){b.classList.add('found');got++;cnt.textContent=`🔍 찾은 개수: ${got} / ${need}`;good({at:b,small:true,concept:o.concept,review:o.review});
+    if(got===need){showExp(fb,'⭕ '+(o.exp||'모두 찾았어! 대단해!'),'ok');if(o.save){S.answers[o.save]={q:o.q,a:o.items.filter(x=>x.ok).map(x=>x.t).join(', ')};save();}nextBtn(st,done);}else if(it.fb)showExp(fb,'⭕ '+it.fb,'ok',false);}
+   else{b.classList.remove('nope');void b.offsetWidth;b.classList.add('nope');bad({el:b,concept:o.concept});showExp(fb,'🤔 '+(it.fb||'다시 생각해 봐!'),'no');hb&&hb.more();}};grid.append(b);});
+ st.append(cnt,grid,fb);if(hb)st.append(hb.el);};}
+
+/* 쓰기 */
+function W(o){return(st,done)=>{st.append(qhead(o.q));if(o.example)st.append(h('div',{class:'example'},'💬 예시: '+o.example));
+ if(o.showPrev&&S.answers[o.showPrev])st.append(h('div',{class:'example',style:'border-color:var(--pk)'},'📝 '+S.answers[o.showPrev].a));
+ const prev=S.answers[o.key]?S.answers[o.key].a:'';const ta=h('textarea',{class:'write',placeholder:o.ph||'여기를 눌러 써 보세요 ✏️'});ta.value=prev||fmt(o.starter||'');
+ const cnt=h('span',{class:'cnt'});const upd=()=>cnt.textContent=`${ta.value.replace(/\s/g,'').length}글자`;ta.oninput=upd;upd();
+ const chips=o.chips?h('div',{class:'chips'},h('span',{style:'font-weight:900;align-self:center'},'🧩 낱말 넣기:'),o.chips.map(c=>h('button',{class:'chip',onclick:()=>{const p=ta.selectionStart??ta.value.length;const v=ta.value;const add=(v&&!/\s$/.test(v.slice(0,p))?' ':'')+c+' ';ta.value=v.slice(0,p)+add+v.slice(p);ta.focus();upd();SFX.tap();}},c))):null;
+ const fb=h('div',{class:'fb'});let first=!prev;let shown=false;
+ const sv=h('button',{class:'btn pink'},prev?'✏️ 고쳐서 다시 저장':'💾 저장하기');
+ sv.onclick=()=>{const a=ta.value.trim();const min=o.min||5;if(a.replace(/\s/g,'').length<min){showExp(fb,`조금만 더 써 볼까? (${min}글자 이상)`,'no');ta.focus();return;}
+  if(o.must&&!o.must.some(w=>a.includes(w))){showExp(fb,`'${o.must.join("', '")}' 중에서 낱말을 하나 넣어서 써 봐!`,'no');return;}
+  S.answers[o.key]={q:fmt(o.q),a,at:Date.now()};save();const hits=(o.keys||[]).filter(k=>a.includes(k));
+  if(first){first=false;good({at:sv});}else{SFX.good();toast('💾 답변을 수정해서 저장했어요');}
+  showExp(fb,hits.length?`💾 저장 완료! 핵심 낱말 '${hits.join("', '")}'을(를) 넣어서 아주 잘 썼어!`:'💾 저장 완료! 너의 생각이 잘 담겼어. '+(o.tip||''),'ok');sv.textContent='✏️ 고쳐서 다시 저장';
+  if(!shown){shown=true;nextBtn(st,done);}};
+ st.append(ta,chips,h('div',{class:'wbar'},cnt,sv),fb);
+ if(prev){shown=true;nextBtn(st,done);}};}
+
+/* ================= 특수 단계 ================= */
+function Worlds(){return(st,done)=>{st.append(qhead('두 세계의 문을 하나씩 터치해서 직접 들어가 보자!'));
+ const WD={A:{name:'🌈 저작권이 지켜지는 세계',cls:'wa',sc:[{e:'👩🎨✨🖼️',t:'사람들이 신이 나서 열심히 창작해요.'},{e:'🎵🎶🖌️📚',t:'새로운 노래와 그림이 계속 만들어져요.'},{e:'👏🏆😊',t:'창작자들이 자기 작품으로 인정받아요.'},{e:'🏙️📈🎬',t:'문화 산업이 쑥쑥 발전해요.'}]},
+  B:{name:'🌫️ 저작권이 지켜지지 않는 세계',cls:'wb',sc:[{e:'🖼️💨🦹',t:'그림을 그려도 다른 사람이 마음대로 가져가요.'},{e:'🎵🦹📢',t:'노래를 만들어도 다른 사람이 자기 것이라고 주장해요.'},{e:'😞💤🖌️',t:'창작자들이 창작 의욕을 잃어요.'},{e:'📉🕳️📺',t:'새로운 콘텐츠가 점점 줄어들어요.'}]}};
+ const seen={A:false,B:false};const doors=h('div',{class:'doors'}),view=h('div',{class:'wview'});
+ ['A','B'].forEach(k=>{const d=h('button',{class:'door '+WD[k].cls},h('div',{class:'dicon'},k==='A'?'🚪✨':'🚪💨'),h('div',{class:'dname'},WD[k].name),h('div',{class:'dstate'},'👆 터치해서 들어가기'));d.onclick=()=>enter(k,d);doors.append(d);});
+ function enter(k,d){SFX.tap();let i=0;const w=WD[k];view.innerHTML='';view.className='wview show '+w.cls;const pic=h('div',{class:'wpic'}),cap=h('div',{class:'wcap'}),sh=h('span'),dots=h('div',{class:'wdots'}),nb=h('button',{class:'btn'},'');
+  view.append(h('div',{class:'wtitle'},w.name),pic,h('div',{class:'wcaprow'},cap,sh),dots,nb);
+  function show(){const s=w.sc[i];pic.innerHTML=picHTML(s.e);cap.textContent=s.t;sh.innerHTML='';sh.append(sayBtns(s.t));speak(s.t);dots.textContent=w.sc.map((_,j)=>j<=i?'●':'○').join(' ');nb.textContent=i<3?'다음 장면 ▶':'✔ 탐험 끝! 밖으로 나가기';}
+  nb.onclick=()=>{SFX.tap();if(i<3){i++;show();return;}if(!seen[k]){seen[k]=true;d.classList.add('visited');d.querySelector('.dstate').textContent='✔ 탐험 완료';good({at:d,small:true});}
+   view.className='wview';view.innerHTML='';if(seen.A&&seen.B)compare();else{speak('좋아! 이제 다른 세계의 문도 열어 보자!');toast('👉 다른 세계의 문도 열어 보세요');}};
+  show();setTimeout(()=>{try{view.scrollIntoView({behavior:'smooth',block:'nearest'});}catch(e){}},100);}
+ function compare(){if(st.querySelector('.ctable'))return;const col=(w,bg)=>h('div',{style:`background:${bg}`},h('h4',{},w.name),w.sc.map(s=>h('div',{},'• '+s.t)));
+  st.append(h('div',{class:'ctable in'},col(WD.A,'linear-gradient(140deg,#fff0f8,#e6fff8)'),col(WD.B,'#e3e2e8')));
+  speak('두 세계를 비교해 봐. 저작권이 지켜지면 창작이 계속되고, 지켜지지 않으면 창작이 멈춰 버려.');nextBtn(st,done);}
+ st.append(doors,view);};}
+
+/* 사건 수사 */
+function Case(c,review){return(st,done)=>{st.append(h('div',{class:'casehead'},h('span',{class:'casetag'},review?'🔁 복습 사건':`📁 사건 ${c.no}`),h('b',{},c.title),sayBtns(c.title)));
+ const comic=h('div',{class:'comic'}),cl=h('div',{class:'clues'}),board=h('div',{class:'clueboard'},h('div',{class:'cbt'},'🗂️ 단서 수첩'),cl);
+ const guide=h('div',{class:'guide'},`🔍 장면을 하나씩 터치해서 등장인물을 관찰하고 단서를 모아요! (0/${c.panels.length})`);
+ const area=h('div'),fb=h('div',{class:'fb'});const hb=hintBox(c.hints);hb.el.style.display='none';let found=0,solved=false;
+ autoSpeak(c.title+'. 장면을 터치해서 단서를 찾아봐!');
+ c.panels.forEach((p,i)=>{const pn=h('div',{class:'cpanel',style:`animation-delay:${i*.25}s`},h('div',{class:'cnum'},i+1),h('div',{class:'magn'},'🔍'),h('div',{class:'cpic',html:picHTML(p.pic)}),p.bubble?h('div',{class:'cbub'},'💬 '+p.bubble):null,h('div',{class:'ccap'},p.cap));
+  pn.onclick=()=>{if(pn.classList.contains('seen')){speak(p.cap);return;}pn.classList.add('seen');found++;SFX.coin();speak(p.cap+' 단서 발견! '+p.clue);
+   cl.append(h('div',{class:'clue in'},'📌 '+p.clue));guide.textContent=found<c.panels.length?`🔍 단서를 모으는 중… (${found}/${c.panels.length})`:'✅ 단서를 모두 모았어! 이제 판단해 볼까?';if(found===c.panels.length)verdict();};comic.append(pn);});
+ function verdict(){area.innerHTML='';area.append(h('div',{class:'qhead',style:'margin-top:1.2rem'},h('div',{class:'qtext'},'🕵️ 수사관의 판단은?'),sayBtns('이 사건은 저작권 침해일까, 괜찮은 행동일까?')),
+   h('div',{class:'verdict'},vb('🚨 저작권 침해!','bad','red'),vb('✅ 괜찮아요!','ok','mint')));hb.el.style.display='';setTimeout(()=>{try{area.scrollIntoView({behavior:'smooth',block:'nearest'});}catch(e){}},150);}
+ function vb(t,key,col){const b=h('button',{class:'btn big '+col},t);b.onclick=()=>{if(solved)return;
+  if(key===c.verdict){solved=true;area.querySelectorAll('.verdict .btn').forEach(x=>x.disabled=true);b.disabled=false;good({at:b,concept:c.concept,review});fb.className='fb';
+   const w=h('div',{class:'why in'},h('span',{style:'font-size:2.6rem'},c.verdict==='bad'?'🚨':'✅'),h('span',{style:'flex:1'},h('b',{},c.verdict==='bad'?'저작권 침해! ':'괜찮아요! '),c.why),sayBtns(c.why));area.append(w);speak((c.verdict==='bad'?'정답! 저작권 침해야. ':'정답! 괜찮은 행동이야. ')+c.why);
+   if(c.fix)setTimeout(()=>fixQ(),300);else nextBtn(st,done);}
+  else{bad({el:b,concept:c.concept});board.classList.remove('flash');void board.offsetWidth;board.classList.add('flash');showExp(fb,'🤔 '+c.retry,'no');hb.more();}};return b;}
+ function fixQ(){const box=h('div',{style:'margin-top:1.2rem'});area.append(box);Q({q:c.fix.q,opts:c.fix.opts})(box,()=>done());}
+ st.append(comic,guide,board,area,fb,hb.el);};}
+
+/* 복습 사건 주입(맞춤 난이도) */
+function ReviewInject(max=3){return(st,done)=>{const ws=Object.keys(S.weak).filter(k=>S.weak[k]>0&&ALT[k]).sort((a,b)=>S.weak[b]-S.weak[a]).slice(0,max);
+ if(!ws.length){st.append(h('div',{class:'why in'},h('span',{style:'font-size:3rem'},'🏅'),h('span',{style:'flex:1'},'헷갈린 개념이 없어! 복습 사건 없이 바로 통과야.')));speak('헷갈린 개념이 없어! 복습 사건 없이 통과!');nextBtn(st,done);return;}
+ RUN.steps.splice(RUN.i+1,0,...ws.map(k=>Case(pick(ALT[k]),true)));
+ const t=`헷갈렸던 개념과 비슷한 새로운 사건이 ${ws.length}개 도착했어! 같은 문제가 아니라 다른 상황이야. 이번엔 해결할 수 있을 거야!`;
+ st.append(h('div',{class:'why in'},h('span',{style:'font-size:3rem'},'📨'),h('span',{style:'flex:1'},t),sayBtns(t)),h('div',{class:'chips',style:'justify-content:center;margin-top:1rem'},ws.map(k=>h('span',{class:'chip on'},'🔁 '+CONCEPT[k]))));speak(t);nextBtn(st,done,'복습 사건 시작 ▶');};}
+
+/* 읽기: 문단 */
+function Para(o){return(st,done)=>{st.append(h('div',{class:'ptitle'},h('span',{class:'pnum'},`문단 ${o.n}/5`),'「저작권을 왜 지켜야 하나요?」'));const all=o.s.join(' ');const keys=o.key==null?null:[].concat(o.key);
+ const box=h('div',{class:'passage panel'},h('div',{class:'prow'},sayBtns(all),h('span',{},keys?'🖍️ 이 문단에서 가장 중요한 문장을 찾아 터치!':'📖 눈으로 따라가며 읽어 보세요')));
+ const fb=h('div',{class:'fb'});let solved=!keys;const hb=keys&&o.hints?hintBox(o.hints):null;
+ o.s.forEach((s,i)=>{const sp=h('span',{class:'sent-s'+(keys?' tappable':'')},s+' ');if(keys)sp.onclick=()=>{if(solved)return;
+  if(keys.includes(i)){solved=true;sp.classList.add('hl');good({at:sp});showExp(fb,'⭕ '+(o.exp||'맞아! 이 문장이 이 문단의 핵심이야.'),'ok');nextBtn(st,done);}
+  else{sp.classList.add('nope');setTimeout(()=>sp.classList.remove('nope'),700);bad({el:sp});showExp(fb,'🤔 '+(o.hint||'이 문장도 좋지만, 문단 전체를 대표하는 문장을 찾아봐!'),'no');hb&&hb.more();}};box.append(sp);});
+ st.append(box,fb);if(hb)st.append(hb.el);autoSpeak(all);if(!keys)nextBtn(st,done,'다 읽었어요 ▶');};}
+
+/* 읽기 전: 관찰 */
+function Observe(){return(st,done)=>{st.append(qhead('읽기 전 관찰! 제목, 그림, 글의 종류를 하나씩 터치해서 살펴봐.'));const notes=h('div',{class:'notes'});let n=0;
+ const mk=(cls,content,note,isHtml)=>{const el=h('div',{class:'hot '+cls,html:isHtml?content:null},isHtml?null:content);el.onclick=()=>{if(el.classList.contains('seen')){speak(note);return;}el.classList.add('seen');n++;SFX.coin();notes.append(h('div',{class:'note in'},h('span',{},note),sayBtns(note)));speak(note);if(n===3)nextBtn(st,done);};return el;};
+ st.append(h('div',{class:'cover'},mk('cover-title','「저작권을 왜 지켜야 하나요?」','📌 제목이 질문으로 되어 있어! 저작권을 지켜야 하는 까닭을 알려 주는 글일 것 같아.'),
+  mk('cover-pic',picHTML('🧒📸🖼️👧😢'),'🖼️ 그림 속 친구가 슬퍼 보여. 누군가 친구의 그림을 허락 없이 찍어 간 것 같아.',true),
+  mk('cover-tag','🏷️ 의견을 제시하는 글','🏷️ 의견을 제시하는 글은 어떤 문제에 대해 자신의 생각이나 주장을 밝혀 쓴 글이에요. 글쓴이의 의견을 찾으며 읽어야 해!')),notes);};}
+
+/* 읽기 중: 예상 확인 */
+function PredictCheck(){return(st,done)=>{st.append(qhead('읽기 전에 했던 내 예상과 글의 내용이 같은지 확인해 보자!'));
+ st.append(h('div',{class:'example',style:'border-color:var(--pk)'},'📝 내 예상: '+(S.answers.predict?S.answers.predict.a:(S.answers.predictPick?S.answers.predictPick.a:'(예상을 아직 쓰지 않았어요)'))));
+ const fb=h('div',{class:'fb'});const opts=h('div',{class:'opts'});
+ [['🎯','예상과 같았어요!','예상이 딱 맞았네! 제목과 그림을 잘 살펴본 덕분이야.'],['🤏','조금 달랐어요.','괜찮아! 예상과 다른 점을 찾는 것도 훌륭한 읽기 방법이야.'],['😮','많이 달랐어요.','좋아! 달랐던 점을 알아차린 것 자체가 꼼꼼히 읽고 있다는 증거야.']].forEach(([ic,t,f])=>{
+  const b=h('button',{class:'opt'},h('span',{class:'ic'},ic),h('span',{},t));b.onclick=()=>{if(opts.dataset.done)return;opts.dataset.done=1;b.classList.add('ok');S.answers.predictCheck={q:'내 예상과 글의 내용이 같았나요?',a:t};good({at:b,small:true});showExp(fb,'⭕ '+f,'ok');nextBtn(st,done);};opts.append(b);});
+ st.append(opts,fb);};}
+
+/* 읽기 후: 돌아보기 */
+function Reflect(){return(st,done)=>{st.append(qhead('나의 읽기 과정을 돌아보자! 해낸 것을 체크하고, 잘한 점과 노력할 점을 써 봐.'));
+ const qs=['글을 읽기 전에 제목을 보고 어떤 내용일지 예상했나요?','자신이 예상한 내용이 글의 내용과 같은지 확인했나요?','글쓴이의 의견이 무엇인지 찾으며 읽었나요?','글쓴이와 자신의 의견을 비교하여 정리했나요?'];
+ const on=(S.answers.checklist&&S.answers.checklist.list)||[];const checks=h('div',{class:'checks'});
+ qs.forEach((q,i)=>{const b=h('button',{class:'chk'+(on[i]?' on':'')},h('span',{class:'box'},on[i]?'✔':''),h('span',{style:'flex:1'},q),sayBtns(q));b.onclick=()=>{on[i]=!on[i];b.classList.toggle('on',!!on[i]);b.querySelector('.box').textContent=on[i]?'✔':'';SFX.tap();};checks.append(b);});
+ const g=h('textarea',{class:'write',placeholder:'예) 제목을 보고 내용을 예상하며 읽었어요.'}),m=h('textarea',{class:'write',placeholder:'예) 다음에는 글쓴이의 의견을 더 꼼꼼히 찾을래요.'});
+ g.value=S.answers.good?S.answers.good.a:'';m.value=S.answers.improve?S.answers.improve.a:'';
+ const fb=h('div',{class:'fb'});let first=!S.answers.good;
+ const sv=h('button',{class:'btn pink'},'💾 저장하기');sv.onclick=()=>{if(g.value.trim().length<3||m.value.trim().length<3){showExp(fb,'잘한 점과 노력할 점을 모두 조금씩 써 볼까?','no');return;}
+  S.answers.good={q:'나의 읽기 과정 — 잘한 점',a:g.value.trim()};S.answers.improve={q:'나의 읽기 과정 — 노력할 점',a:m.value.trim()};S.answers.checklist={q:'읽기 과정 점검',a:qs.filter((_,i)=>on[i]).length+'개 해냈어요',list:on};save();
+  if(first){first=false;good({at:sv});}else toast('💾 수정해서 저장했어요');showExp(fb,'💾 저장 완료! 스스로 돌아보는 사람이 진짜 읽기 탐정이야.','ok');nextBtn(st,done);};
+ st.append(checks,h('div',{class:'refl'},h('div',{},h('div',{class:'rh',style:'background:#ffd2bd'},'👍 잘한 점'),g),h('div',{},h('div',{class:'rh',style:'background:#bfe0ff'},'💪 노력할 점'),m)),h('div',{class:'wbar'},h('span',{class:'mean'},'215~216쪽 질문을 떠올리며 써 봐요.'),sv),fb);};}
+
+/* 낱말 연구소 */
+const WORDS=[{w:'창작',pr:'[창작]',e:'🎨✨',bg:'linear-gradient(160deg,#ff8ac4,#7b5cff)',mean:'예술 작품을 독창적으로 지어냄. 방안이나 물건 따위를 처음으로 만들어 냄.',easy:'세상에 없던 작품을 내 생각으로 처음 만들어 내는 것',ex:'나는 나만의 동화를 창작했어요.'},
+ {w:'발전',pr:'[발쩐]',e:'🌱📈🚀',bg:'linear-gradient(160deg,#5ff5d2,#2f5bff)',mean:'더 낫고 좋은 상태나 더 높은 단계로 나아감.',easy:'점점 더 좋아지고 커지는 것',ex:'저작권을 잘 지키면 문화 산업이 발전해요.'},
+ {w:'침해',pr:'[침해]',e:'🚫🖐️',bg:'linear-gradient(160deg,#ffb13d,#ff4f6f)',mean:'침범하여 해를 끼침.',easy:'남의 것에 함부로 손대서 피해를 주는 것',ex:'친구의 글을 몰래 베끼면 저작권을 침해하는 거예요.'}];
+function jamo(s){const C='ㄱㄲㄴㄷㄸㄹㅁㅂㅃㅅㅆㅇㅈㅉㅊㅋㅌㅍㅎ',V='ㅏㅐㅑㅒㅓㅔㅕㅖㅗㅘㅙㅚㅛㅜㅝㅞㅟㅠㅡㅢㅣ',T=['','ㄱ','ㄲ','ㄳ','ㄴ','ㄵ','ㄶ','ㄷ','ㄹ','ㄺ','ㄻ','ㄼ','ㄽ','ㄾ','ㄿ','ㅀ','ㅁ','ㅂ','ㅄ','ㅅ','ㅆ','ㅇ','ㅈ','ㅊ','ㅋ','ㅌ','ㅍ','ㅎ'];
+ return[...s].map(ch=>{const c=ch.charCodeAt(0)-0xAC00;if(c<0||c>11171)return{ch,p:[ch]};return{ch,p:[C[Math.floor(c/588)],V[Math.floor(c%588/28)],T[c%28]].filter(Boolean)};});}
+function WordLab(){return(st,done)=>{st.append(qhead('낱말 카드를 하나씩 눌러서 발음, 뜻, 예문을 알아보자! 세 카드를 모두 열면 공장이 돌아가!'));const opened=new Set();const det=h('div',{class:'wdetail'});
+ const grid=h('div',{class:'wlab'},WORDS.map(w=>{const b=h('button',{class:'wl',style:`background:${w.bg}`},h('div',{class:'we'},w.e),h('div',{class:'ww'},w.w));b.onclick=()=>{SFX.tap();open(w);if(!opened.has(w.w)){opened.add(w.w);b.classList.add('opened');good({at:b,small:true});if(opened.size===3)nextBtn(st,done);}};return b;}));
+ function open(w){det.innerHTML='';const jm=h('div',{class:'jamo'});const p=h('div',{class:'panel in'},
+  h('div',{class:'wbig'},h('span',{style:'font-size:3.4rem'},w.e),h('span',{class:'w'},w.w),h('span',{class:'pr'},'발음 '+w.pr),sayBtns(w.w),h('button',{class:'btn yellow sm',onclick:()=>{jm.innerHTML='';jamo(w.w).forEach((x,i)=>jm.append(h('div',{class:'jsy'},x.p.map((j,k)=>h('span',{class:'j',style:`animation-delay:${(i*3+k)*.12}s`},j)),h('span',{class:'eq'},'='),h('span',{class:'j',style:'border-color:var(--pu);animation-delay:1s'},x.ch))));speak(jamo(w.w).map(x=>x.p.join(' ')+', '+x.ch).join('. '));}},'🧩 글자 분해')),
+  h('div',{class:'wrow'},h('b',{},'뜻'),h('span',{style:'flex:1'},w.mean),sayBtns(w.mean)),
+  h('div',{class:'wrow'},h('b',{},'쉽게'),h('span',{style:'flex:1'},w.easy),sayBtns(w.easy)),
+  h('div',{class:'wrow'},h('b',{},'예문'),h('span',{style:'flex:1'},w.ex),sayBtns(w.ex)),jm);det.append(p);speak(`${w.w}. ${w.easy}. 예를 들면, ${w.ex}`);}
+ st.append(grid,det);};}
+
+/* 창작 스튜디오 */
+function Studio(){return(st,done)=>{st.append(qhead('창작 스튜디오! 나만의 작품을 그리고, 제목과 설명을 붙여서 작품 카드를 완성해 봐.'));
+ const W_=800,H_=560;const cv=h('canvas',{class:'cv',width:W_,height:H_});const ctx=cv.getContext('2d');ctx.fillStyle='#fff';ctx.fillRect(0,0,W_,H_);ctx.lineCap='round';ctx.lineJoin='round';
+ let color='#2f5bff',size=12,tool='pen',stamp='⭐',strokes=0,drawing=false,last=null;const hist=[];
+ const pos=e=>{const r=cv.getBoundingClientRect();return[(e.clientX-r.left)*W_/r.width,(e.clientY-r.top)*H_/r.height];};
+ const push=()=>{try{hist.push(ctx.getImageData(0,0,W_,H_));if(hist.length>12)hist.shift();}catch(e){}};
+ cv.addEventListener('pointerdown',e=>{e.preventDefault();try{cv.setPointerCapture(e.pointerId);}catch(_){}push();const[x,y]=pos(e);
+  if(tool==='stamp'){ctx.font='80px serif';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(stamp,x,y);strokes++;SFX.tap();return;}
+  drawing=true;last=[x,y];ctx.strokeStyle=tool==='eraser'?'#fff':color;ctx.lineWidth=tool==='eraser'?size*2.5:size;ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(x+.1,y+.1);ctx.stroke();});
+ cv.addEventListener('pointermove',e=>{if(!drawing)return;const[x,y]=pos(e);ctx.beginPath();ctx.moveTo(last[0],last[1]);ctx.lineTo(x,y);ctx.stroke();last=[x,y];});
+ const end=()=>{if(drawing){drawing=false;strokes++;}};cv.addEventListener('pointerup',end);cv.addEventListener('pointercancel',end);
+ const tools=h('div',{class:'tools'});const cols=['#251c5c','#ff4f6f','#ff9f1c','#ffd23f','#2fe0b8','#2f5bff','#7b5cff','#ff8ac4','#8b5a2b'];
+ const setOn=el=>{tools.querySelectorAll('.on').forEach(x=>x.classList.remove('on'));el.classList.add('on');};
+ cols.forEach((c,i)=>{const s=h('button',{class:'sw'+(c===color?' on':''),style:`background:${c}`});s.onclick=()=>{color=c;tool='pen';setOn(s);SFX.tap();};tools.append(s);});
+ [['✏️',6],['🖊️',14],['🖌️',28]].forEach(([ic,sz])=>{const b=h('button',{class:'tb'},ic);b.onclick=()=>{size=sz;if(tool!=='eraser')tool='pen';toast('붓 크기 바꿈');SFX.tap();};tools.append(b);});
+ const er=h('button',{class:'tb'},'🧽');er.onclick=()=>{tool='eraser';setOn(er);SFX.tap();};tools.append(er);
+ ['⭐','🌈','🐱','🌸','🚀','🎵','❤️','☀️'].forEach(sx=>{const b=h('button',{class:'tb'},sx);b.onclick=()=>{tool='stamp';stamp=sx;setOn(b);SFX.tap();};tools.append(b);});
+ tools.append(h('button',{class:'tb',onclick:()=>{if(hist.length){ctx.putImageData(hist.pop(),0,0);SFX.tap();}}},'↩️'),h('button',{class:'tb',onclick:()=>{push();ctx.fillStyle='#fff';ctx.fillRect(0,0,W_,H_);strokes=0;SFX.tap();}},'🗑️'));
+ let type='🖼️ 그림';const types=h('div',{class:'chips'},['🖼️ 그림','📖 이야기 장면','🎵 노래 앨범 표지'].map((t,i)=>{const c=h('button',{class:'chip'+(i===0?' on':'')},t);c.onclick=()=>{type=t;types.querySelectorAll('.chip').forEach(x=>x.classList.remove('on'));c.classList.add('on');SFX.tap();};return c;}));
+ const ti=h('input',{class:'inp',maxlength:'24',placeholder:'예) 고래와 노을'}),de=h('textarea',{class:'write',style:'min-height:5.5rem;font-size:1.25rem',maxlength:'120',placeholder:'예) 바다에서 고래가 노을을 보는 장면을 상상해서 그렸어요.'});
+ const fb=h('div',{class:'fb'}),out=h('div');
+ const mk=h('button',{class:'btn pink big',style:'width:100%;margin-top:.8rem'},'✨ 작품 카드 완성!');
+ mk.onclick=()=>{if(strokes<1){showExp(fb,'먼저 그림을 그려 볼까? 손가락으로 쓱쓱!','no');return;}if(!ti.value.trim()){showExp(fb,'작품에 제목을 붙여 줘!','no');ti.focus();return;}
+  const sc=h('canvas',{width:400,height:280});sc.getContext('2d').drawImage(cv,0,0,400,280);let img;try{img=sc.toDataURL('image/jpeg',.7);}catch(e){img='';}
+  const art={img,title:ti.value.trim(),desc:de.value.trim()||'(설명 없음)',type,by:S.name,date:new Date().toLocaleDateString('ko-KR')};
+  const first=!st.dataset.made;st.dataset.made=1;S.gallery.unshift(art);if(!first)S.gallery.splice(1,1);S.gallery=S.gallery.slice(0,6);S.answers.myArt={q:'내가 만든 작품',a:`${art.title} — ${art.desc}`};save();
+  out.innerHTML='';out.append(h('div',{style:'max-width:26rem;margin:1rem auto'},artCard(art)));if(first)good({at:mk});else toast('작품을 고쳐서 다시 저장했어요');
+  showExp(fb,`⭕ 작품 카드 완성! 「${art.title}」은 ${S.name} 창작자가 만든 소중한 창작물이야.`,'ok');mk.textContent='✏️ 고쳐서 다시 완성';burst(innerWidth/2,innerHeight/2,40,['🎨','✨','⭐']);nextBtn(st,done);};
+ st.append(h('div',{class:'studio'},h('div',{},cv,tools),h('div',{class:'form'},h('label',{},'1. 작품 종류'),types,h('label',{},'2. 작품 제목'),ti,h('label',{},'3. 작품 설명'),de,h('label',{},'4. 만든 사람'),h('div',{class:'inp',style:'background:#f6f4ff'},'© '+S.name),mk)),fb,out);};}
+function artCard(a){return h('div',{class:'artcard'},a.img?h('img',{src:a.img,alt:a.title}):h('div',{style:'aspect-ratio:800/560;background:#eee;border-radius:1rem'}),h('span',{class:'typ'},a.type||'🖼️ 그림'),h('div',{class:'at'},a.title),h('div',{class:'ad'},a.desc),h('div',{class:'aby'},h('span',{},'만든 사람: '+a.by),h('span',{class:'cmark'},'© '+a.by)));}
+function GalleryShow(){return(st,done)=>{st.append(qhead('짜잔! 네 작품이 저작권 수호국 갤러리에 전시되었어!'));const g=h('div',{class:'gallery'},S.gallery.slice(0,4).map(a=>{const c=artCard(a);c.classList.add('in');return c;}));
+ const t='작품 아래의 © 표시는 이 작품을 누가 만들었는지 알려 줘. 다른 사람이 이 작품을 쓰고 싶다면, 반드시 만든 사람에게 허락을 받아야 해!';
+ st.append(g,h('div',{class:'why in'},h('span',{style:'font-size:2.6rem'},'©'),h('span',{style:'flex:1'},t),sayBtns(t)));speak(t);burst(innerWidth/2,innerHeight/3,30,['✨','🎉']);nextBtn(st,done);};}
+
+/* 보스 */
+function BossWrap(fn,idx,total){return(st,done)=>{const hp=100*(1-idx/total);const bb=h('div',{class:'bossbox'},virusSVG('bob'));const bar=h('i',{style:`width:${hp}%`});
+ const arena=h('div',{class:'arena',id:'arena'},bb,h('div',{class:'bossinfo'},h('div',{class:'bname2'},'👾 복제 바이러스 카피몬'),h('div',{class:'hpbar'},bar),h('div',{class:'atk'},`⚔️ 공격 ${idx+1} / ${total} — 정답을 맞혀 정화 빔을 쏘자!`)));
+ st.append(arena);const inner=h('div');st.append(inner);
+ BOSSHIT=(d)=>{arena.append(h('div',{class:'laser'}));SFX.hit();setTimeout(()=>{bb.classList.remove('hit');void bb.offsetWidth;bb.classList.add('hit');bar.style.width=(100*(1-(idx+1)/total))+'%';const[x,y]=rectC(bb);burst(x,y,30,['💥','✨','⭐']);speak(pick(['명중!','효과가 굉장해!','바이러스가 약해지고 있어!','정화 빔 적중!']));},350);setTimeout(d,1500);};
+ fn(inner,done);};}
+function bossAttack(){const a=$('#arena');document.body.append(h('div',{class:'redflash'}));setTimeout(()=>{const f=$('.redflash');f&&f.remove();},700);if(a){a.classList.remove('shake');void a.offsetWidth;a.classList.add('shake');}toast('👾 바이러스의 공격! 🛡️ 방어막이 막았어. 다시 도전!');}
+function Victory(){return(st,done)=>{st.classList.add('clear');const v=h('div',{style:'width:14rem;margin:0 auto'},virusSVG(''));const t=h('div',{class:'clear-t',style:'text-align:center;font-size:3rem'},'');
+ st.append(h('div',{style:'text-align:center;min-height:22rem;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1rem'},v,t));SFX.win();
+ v.animate([{transform:'scale(1) rotate(0)'},{transform:'scale(1.3) rotate(20deg)',filter:'brightness(2)'},{transform:'scale(.1) rotate(720deg)',opacity:0}],{duration:1600,fill:'forwards',easing:'ease-in'});
+ let k=0;const iv=setInterval(()=>{burst(innerWidth*(.2+Math.random()*.6),innerHeight*(.2+Math.random()*.4),35,k%2?['💥','✨','⭐','🌈']:null);if(++k>8)clearInterval(iv);},260);
+ setTimeout(()=>{t.textContent='💥 복제 바이러스 정화 완료! 💥';t.classList.add('in');speak('해냈어! 복제 바이러스를 완전히 정화했어! 콘텐츠 세계에 다시 색이 돌아오고 있어!');nextBtn(st,done,'🏆 임무 완료!');},1700);};}
+
+/* ================= 장면 ================= */
+const sp=(e,c='',d=0)=>`<span class="e ${c}" style="--d:${d}s">${e}</span>`;
+const SC={
+ night:`<div class="sc night"><span class="tag">새벽 3시…</span>${sp('🌙','',0)}${sp('🧒','big bob',.2)}${sp('🎨','big wig',.4)}${sp('✨','',.6)}</div>`,
+ steal:`<div class="sc"><span class="tag" style="background:#ff4f6f">슬쩍…</span>${sp('🖼️','big')}<span class="e big runin">🦹</span></div>`,
+ sad:`<div class="sc">${sp('🦹','big')}<span class="bub">"이건 내가 그린 작품이야!"</span>${sp('🏆','',.5)}${sp('😢','big',.8)}</div>`,
+ shield:`<div class="sc">${sp('🎨','big',0)}${sp('🎵','big',.15)}${sp('📖','big',.3)}<span class="shieldc">©</span></div>`,
+ think:`<div class="sc">${sp('🧠','big')}${sp('💭','',.2)}<span class="arrow">➜</span>${sp('🖼️','big',.4)}<span class="arrow">➜</span>${sp('🛡️','big',.6)}</div>`,
+ works:`<div class="sc colorful">${['🎵','🎨','📖','📷','🎬'].map((e,i)=>sp(e,'big',i*.2)).join('')}</div>`,
+ respect:`<div class="sc">${sp('🙋','big')}<span class="bub">"네 작품 써도 될까?"</span>${sp('🤝','big',.6)}${sp('✅','big',.9)}</div>`,
+ portal:`<div class="sc"><span class="e big bob">🚪</span>${sp('🌈','big',.2)}<span class="arrow">⇄</span>${sp('🌫️','big',.4)}<span class="e big bob">🚪</span></div>`,
+ city:`<div class="sc colorful">${['🏙️','🎤','🎨','📚','🎬','📷'].map((e,i)=>sp(e,i?'':'big',i*.15)).join('')}</div>`,
+ creators:`<div class="sc colorful">${sp('👩','big')}${sp('🎤')}${sp('👨','big',.2)}${sp('🎨',' ',.3)}${sp('👧','big',.4)}${sp('📖','',.5)}${sp('👦','big',.6)}${sp('💡','',.7)}</div>`,
+ virus:`<div class="sc night"><span class="tag" style="background:#5bd14a;color:#1d1748">⚠️ 경보</span>${sp('🦠','big bob')}${sp('📋','',.2)}${sp('📋','',.3)}${sp('📋','',.4)}${sp('🦠','big bob',.5)}</div>`,
+ gray:`<div class="sc gray">${sp('🏙️','big')}${sp('😞','big',.2)}${sp('🖌️','',.4)}${sp('💤','',.6)}</div>`,
+ hero:()=>`<div class="sc colorful"><span style="width:9rem;display:inline-block">${playerSVG(S.skin,'bob').outerHTML}</span>${sp('🔍','big',.3)}${sp('⭐','',.5)}${sp('🛡️','big',.7)}</div>`,
+ factory:`<div class="sc colorful">${sp('🏭','big')}${sp('⚙️','spin',.2)}${sp('🔤','big',.4)}${sp('🧩','big',.6)}</div>`,
+ studio:`<div class="sc colorful">${sp('🎨','big')}${sp('🖌️','wig',.2)}${sp('📝','big',.4)}${sp('🎵','big',.6)}${sp('🖼️','big',.8)}</div>`,
+ thief:`<div class="sc night">${sp('🦠','big bob')}${sp('🖼️','big runin',.3)}<span class="bub">"이 작품은 이제 내 거다! 크크크"</span></div>`,
+ detective:`<div class="sc">${sp('🕵️','big')}${sp('📁','',.2)}${sp('🔍','big',.4)}${sp('🚨','',.6)}</div>`,
+ read:`<div class="sc colorful">${sp('📖','big')}${sp('🔮','big',.2)}${sp('🔍','big',.4)}${sp('📝','big',.6)}</div>`,
+ boss:`<div class="sc night">${sp('🦠','big bob')}${sp('⚡','',.3)}${sp('🛡️','big',.5)}${sp('🕵️','big',.7)}</div>`
+};
+const CONCEPT={photo:'남의 그림을 내 작품이라고 하기',music:'인터넷 음악을 허락 없이 쓰기',copy:'글을 그대로 베끼기',inspire:'영감을 얻어 새로 만들기',permit:'허락받고 사용하기',word:'낱말 뜻'};
+
+/* ================= 사건 ================= */
+const CASES=[
+{no:1,concept:'photo',verdict:'bad',title:'사라진 그림의 주인',
+ panels:[{pic:'👧🎨🖼️',bubble:'일주일 걸려 완성!',cap:'서연이가 일주일 동안 그림을 그렸어요.',clue:'그림은 서연이가 직접 만든 창작물'},
+  {pic:'🧒📸🖼️',bubble:'찰칵! (몰래)',cap:'민호가 서연이에게 묻지 않고 그림을 사진으로 찍었어요.',clue:'서연이에게 허락을 받지 않았어'},
+  {pic:'📱🧒❤️',bubble:'내가 그린 그림이야!',cap:'민호가 그 사진을 자기 작품이라며 인터넷에 올렸어요.',clue:'남의 그림을 자기 작품이라고 했어'}],
+ why:'서연이의 그림을 허락 없이 찍어서 자기 작품이라고 올렸어. 서연이의 저작권을 침해한 거야.',
+ retry:'단서 수첩을 다시 봐! 민호는 서연이에게 물어봤을까? 누구 작품이라고 말했지?',
+ fix:{q:'민호는 어떻게 했어야 할까?',opts:[{t:'서연이에게 허락을 받고, 서연이의 작품이라고 밝혀요.',icon:'🙋',ok:1},{t:'그림을 조금 잘라서 올려요.',icon:'✂️',fb:'조금 잘라도 서연이의 그림이야. 허락이 필요해!'},{t:'아무도 모르게 올리면 돼요.',icon:'🤫',fb:'몰래 하면 더 안 돼! 만든 사람의 허락이 먼저야.'}]},
+ hints:['🙋❓🖼️','허락, 자기 작품','창작물을 쓸 때는 만든 사람의 허락이 필요해. 그리고 남의 작품을 내 것이라고 하면 절대 안 돼.','친구의 일기를 사진 찍어서 내가 쓴 일기라고 올리면 어떨까?']},
+{no:2,concept:'music',verdict:'bad',title:'수상한 배경 음악',
+ panels:[{pic:'🎤🎹🎵',bubble:'♪ 반짝이는 별처럼~',cap:'가수와 작곡가가 여러 달 동안 노래를 만들었어요.',clue:'노래는 가수와 작곡가의 창작물'},
+  {pic:'💻🔎🎵',bubble:'이 노래 좋다! 그냥 써야지.',cap:'하준이가 인터넷에서 찾은 노래를 내려받았어요.',clue:'허락도 받지 않았고 출처도 확인하지 않았어'},
+  {pic:'🎬📹🎵',bubble:'내 영상 완성!',cap:'하준이는 그 노래를 자기 영상에 넣어 올렸어요. 누구 노래인지 쓰지 않았어요.',clue:'출처와 허락 없이 영상에 사용했어'}],
+ why:'인터넷에 있는 노래에도 만든 사람이 있어. 출처나 허락 없이 내 영상에 쓰면 저작권 침해야.',
+ retry:'인터넷에 있다고 누구나 마음대로 써도 될까? 하준이가 허락을 받았는지 단서를 다시 봐!',
+ fix:{q:'하준이는 어떻게 해야 할까?',opts:[{t:'이용 허락을 받은 음악이나, 써도 된다고 공개된 음악을 쓰고 출처를 밝혀요.',icon:'📝',ok:1},{t:'노래 소리를 작게 줄이면 괜찮아요.',icon:'🔉',fb:'소리를 줄여도 남의 노래를 허락 없이 쓰는 건 똑같아.'},{t:'인터넷에 있는 건 다 공짜예요.',icon:'🆓',fb:'인터넷에 있어도 만든 사람의 권리가 있어!'}]},
+ hints:['💻🎵❓','출처, 허락','인터넷에 있는 노래, 그림, 영상에도 모두 만든 사람이 있어. 쓰려면 허락이 필요하고 출처를 밝혀야 해.','도서관 책을 공짜로 빌릴 수 있다고 그 책이 내 것이 되지는 않잖아?']},
+{no:3,concept:'copy',verdict:'bad',title:'똑같은 이야기',
+ panels:[{pic:'🧒✍️📒',bubble:'용감한 고양이 이야기!',cap:'도윤이가 직접 이야기를 지었어요.',clue:'이야기는 도윤이의 창작물'},
+  {pic:'👀📒✍️',bubble:'(쓱쓱… 그대로 따라 써야지)',cap:'은비가 도윤이의 이야기를 읽고, 묻지도 않고 그대로 베껴 썼어요.',clue:'허락 없이 그대로 베껴 썼어'},
+  {pic:'🏫📄🏅',bubble:'제가 쓴 이야기예요!',cap:'은비는 베낀 이야기를 자기 이름으로 냈어요.',clue:'자기 이름으로 냈어'}],
+ why:'친구의 이야기를 허락 없이 그대로 베껴서 자기 것처럼 냈어. 친구의 저작권을 침해한 거야.',
+ retry:'은비가 낸 이야기는 은비의 생각일까, 도윤이의 생각일까? 단서를 다시 봐!',
+ fix:{q:'은비는 어떻게 해야 했을까?',opts:[{t:'도윤이의 이야기를 읽고 느낀 점을 바탕으로, 내 생각을 담은 새 이야기를 써요.',icon:'💡',ok:1},{t:'글씨체만 바꿔서 내요.',icon:'🔤',fb:'글씨체를 바꿔도 내용은 도윤이 것이야.'},{t:'제목만 바꿔서 내요.',icon:'🏷️',fb:'제목만 바꾸는 것도 베끼기야!'}]},
+ hints:['📒➡️📄','베껴 쓰기','다른 사람이 쓴 글을 그대로 베껴서 내 것처럼 쓰면 안 돼.','친구의 시험지를 그대로 베끼면 그게 내 실력일까?']},
+{no:4,concept:'inspire',verdict:'ok',title:'영감을 받은 그림',
+ panels:[{pic:'👦🎨🌊',bubble:'바다 그림 완성!',cap:'준서가 푸른 바다 그림을 그렸어요.',clue:'준서의 그림은 준서의 창작물'},
+  {pic:'👧💭✨',bubble:'와, 나도 바다를 그려 보고 싶다!',cap:'지아가 준서의 그림을 보고 영감을 얻었어요.',clue:'그림을 보고 아이디어(영감)를 얻었어'},
+  {pic:'👧🐳🌅',bubble:'나는 고래와 노을이 있는 바다!',cap:'지아는 자기만의 생각으로 고래와 노을이 있는 새로운 그림을 그렸어요.',clue:'베끼지 않고 자기만의 새 그림을 그렸어'}],
+ why:'지아는 준서의 그림을 베끼지 않았어. 영감을 얻어서 자기 생각을 담아 새로운 그림을 만들었으니 괜찮아! 이것도 멋진 창작이야.',
+ retry:'지아의 그림이 준서의 그림과 똑같을까? 세 번째 장면을 다시 봐!',
+ hints:['🌊➡️🐳🌅','영감, 새로운 그림','다른 작품을 보고 아이디어를 얻어서, 내 생각으로 새롭게 만드는 것은 베끼기가 아니야.','멋진 축구 선수를 보고 나도 열심히 연습하는 건 베끼기가 아니라 배우는 거야.']},
+{no:5,concept:'permit',verdict:'ok',title:'허락을 받은 사진',
+ panels:[{pic:'📷🌸👩',bubble:'봄꽃 사진 찰칵!',cap:'사진작가가 예쁜 봄꽃 사진을 찍었어요.',clue:'사진은 사진작가의 창작물'},
+  {pic:'🏫✉️🙋',bubble:'학급 신문에 써도 될까요?',cap:'우리 반은 사진작가에게 사진을 써도 되는지 물어보았어요.',clue:'만든 사람에게 허락을 요청했어'},
+  {pic:'📰🌸✅',bubble:'사진: 김봄 작가 (허락받음)',cap:'허락을 받은 뒤, 작가 이름을 밝히고 학급 신문에 실었어요.',clue:'허락을 받고 만든 사람을 밝혔어'}],
+ why:'정당한 허락을 받고, 만든 사람도 밝혔어. 창작자의 권리를 존중한 올바른 사용이야!',
+ retry:'우리 반은 사진작가에게 허락을 받았을까? 두 번째, 세 번째 장면을 다시 봐!',
+ hints:['✉️✅','허락, 출처','만든 사람에게 허락을 받으면 그 작품을 쓸 수 있어.','친구에게 "연필 빌려도 돼?" 물어보고 쓰는 건 괜찮지?']}];
+
+const ALT={
+ photo:[{title:'포스터 대회의 비밀',concept:'photo',verdict:'bad',
+  panels:[{pic:'👦🖍️📜',bubble:'환경 포스터 완성!',cap:'옆 반 친구가 환경 포스터를 그렸어요.',clue:'포스터는 옆 반 친구의 창작물'},{pic:'🧒📸📜',bubble:'찰칵!',cap:'태오가 몰래 포스터를 사진으로 찍었어요.',clue:'허락을 받지 않았어'},{pic:'🧒🏆📜',bubble:'제가 그렸어요!',cap:'태오는 사진을 출력해서 자기 이름으로 대회에 냈어요.',clue:'자기 이름으로 냈어'}],
+  why:'다른 사람의 포스터를 허락 없이 가져와 자기 이름으로 냈으니 저작권 침해야.',retry:'포스터를 그린 사람은 누구지? 태오는 허락을 받았을까?',
+  fix:{q:'태오는 어떻게 해야 할까?',opts:[{t:'내 생각으로 직접 포스터를 그려서 내요.',icon:'🖍️',ok:1},{t:'색깔만 바꿔서 내요.',icon:'🎨',fb:'색만 바꿔도 친구의 작품이야.'},{t:'친구에게 비밀로 해요.',icon:'🤫',fb:'비밀로 해도 침해는 침해야.'}]},
+  hints:['📜➡️🏆','자기 이름','남이 만든 작품에 내 이름을 쓰면 안 돼.','친구가 만든 케이크를 내가 만들었다고 하면 어떨까?']}],
+ music:[{title:'발표회 배경 음악',concept:'music',verdict:'bad',
+  panels:[{pic:'🎹🎼👩',bubble:'새 곡 완성!',cap:'작곡가가 피아노곡을 만들었어요.',clue:'피아노곡은 작곡가의 창작물'},{pic:'💻⬇️🎼',bubble:'이거 몰래 받아야지',cap:'수아가 허락되지 않은 사이트에서 그 곡을 몰래 내려받았어요.',clue:'허락 없이 내려받았어'},{pic:'🎬🎼📢',bubble:'출처는 안 써도 되겠지?',cap:'수아는 그 곡을 영상에 넣어 여러 사람에게 공유했어요.',clue:'출처 없이 공유했어'}],
+  why:'만든 사람의 허락 없이 음악을 내려받아 출처도 없이 공유했어. 저작권 침해야.',retry:'수아가 쓴 음악은 누가 만들었지? 허락이나 출처가 있었니?',
+  fix:{q:'수아는 어떻게 해야 할까?',opts:[{t:'써도 된다고 허락된 음악을 골라 출처를 밝혀요.',icon:'📝',ok:1},{t:'노래 앞부분만 쓰면 돼요.',icon:'✂️',fb:'조금만 써도 허락이 필요해.'},{t:'모두가 쓰니까 괜찮아요.',icon:'👥',fb:'모두가 해도 잘못된 건 잘못된 거야.'}]},
+  hints:['🎼❓','허락, 출처','음악도 창작물이야. 쓰려면 허락을 받고 출처를 밝혀야 해.','남의 자전거를 다들 탄다고 내가 몰래 타도 될까?']}],
+ copy:[{title:'숙제 복사 사건',concept:'copy',verdict:'bad',
+  panels:[{pic:'💻📝✨',bubble:'내 블로그 글!',cap:'한 작가가 블로그에 여행 이야기를 썼어요.',clue:'블로그 글은 작가의 창작물'},{pic:'🧒🖱️📋',bubble:'Ctrl+C, Ctrl+V!',cap:'우진이가 그 글을 통째로 복사했어요.',clue:'글을 그대로 복사했어'},{pic:'📄🏫🧒',bubble:'제가 쓴 숙제예요!',cap:'우진이는 복사한 글을 자기 숙제로 냈어요.',clue:'자기가 쓴 것처럼 냈어'}],
+  why:'남의 글을 그대로 복사해서 내가 쓴 것처럼 냈으니 저작권 침해야.',retry:'숙제 속 글은 누가 쓴 글이지? 단서를 다시 봐!',
+  fix:{q:'우진이는 어떻게 해야 할까?',opts:[{t:'글을 참고하고 출처를 밝힌 뒤, 내 말로 다시 써요.',icon:'✍️',ok:1},{t:'문장 순서만 바꿔요.',icon:'🔀',fb:'순서만 바꿔도 베낀 글이야.'},{t:'선생님이 모르면 괜찮아요.',icon:'🙈',fb:'아무도 몰라도 작가의 권리는 그대로야.'}]},
+  hints:['📋➡️📄','복사, 내 말로','다른 사람이 쓴 글을 그대로 가져다 쓰면 안 돼. 참고했다면 출처를 밝히고 내 말로 써야 해.','친구 그림 위에 종이를 대고 따라 그려서 내 그림이라고 하면?']}],
+ inspire:[{title:'만화를 보고 만든 캐릭터',concept:'inspire',verdict:'ok',
+  panels:[{pic:'📚🦸',bubble:'재밌는 만화다!',cap:'하린이가 좋아하는 만화책을 읽었어요.',clue:'만화는 작가의 창작물'},{pic:'👧💭💡',bubble:'나도 내 캐릭터를 만들어 볼까?',cap:'하린이는 만화를 보고 아이디어가 떠올랐어요.',clue:'보고 영감을 얻었어'},{pic:'👧✏️🐰',bubble:'날개 달린 토끼 탐정!',cap:'하린이는 생김새도 이름도 다른 자기만의 캐릭터를 새로 만들었어요.',clue:'똑같이 따라 그리지 않고 새로 만들었어'}],
+  why:'만화를 그대로 베낀 게 아니라, 영감을 얻어 자기만의 새로운 캐릭터를 만들었어. 괜찮아!',retry:'하린이의 캐릭터가 만화 속 캐릭터와 똑같을까? 세 번째 장면을 봐!',
+  hints:['💡➡️🐰','영감, 새로 만들기','아이디어를 얻어 내 생각으로 새로 만들면 그건 나의 창작물이야.','요리책을 보고 나만의 새 요리를 만드는 것과 비슷해.']}],
+ permit:[{title:'친구 그림으로 만든 표지',concept:'permit',verdict:'ok',
+  panels:[{pic:'👦🎨🐉',bubble:'용 그림 완성!',cap:'시우가 멋진 용 그림을 그렸어요.',clue:'용 그림은 시우의 창작물'},{pic:'👧🙋👦',bubble:'모둠 책 표지로 써도 돼?',cap:'나래가 시우에게 그림을 써도 되는지 물었어요.',clue:'만든 사람에게 허락을 구했어'},{pic:'📘🐉✅',bubble:'표지 그림: 시우',cap:'시우가 좋다고 해서, 시우 이름을 밝히고 표지에 썼어요.',clue:'허락받고 이름을 밝혔어'}],
+  why:'만든 사람에게 허락을 받고, 이름까지 밝혔어. 창작자를 존중한 올바른 사용이야!',retry:'나래는 시우에게 허락을 받았을까? 두 번째 장면을 다시 봐!',
+  hints:['🙋✅','허락','만든 사람에게 허락을 받으면 사용할 수 있어.','"네 지우개 써도 돼?" 하고 물어본 뒤 쓰는 것과 같아.']}]};
+
+/* ================= 미션 구성 ================= */
+const BIN_OK={key:'r',label:'💚 창작자를 존중해요',bg:'linear-gradient(160deg,#5ff5d2,#1fcaa2)'};
+const BIN_X={key:'x',label:'🚨 저작권을 침해해요',bg:'linear-gradient(160deg,#ff8ac4,#ff4f6f)'};
+const PASS=[
+ ['여러분이 며칠 동안 열심히 그린 그림을 친구가 허락 없이 가져가서 자기 이름으로 냈다고 생각해 보세요.','그런데 그 친구가 칭찬까지 받는다면 기분이 어떨까요?','아마 무척 속상하고 억울할 거예요.','왜냐하면 그 그림은 바로 여러분이 만든 작품이기 때문입니다.'],
+ ['저작권은 사람이 자신의 생각이나 느낌을 표현해서 만든 창작물을 보호하는 권리입니다.','노래, 그림, 글, 사진, 영상을 만든 사람은 자기 작품에 대한 권리를 가집니다.','그래서 다른 사람의 작품을 쓰고 싶을 때에는 만든 사람에게 먼저 허락을 받아야 합니다.'],
+ ['만약 사람들이 저작권을 지키지 않으면 어떻게 될까요?','애써 만든 작품을 누구나 마음대로 가져간다면 창작자들은 더 이상 작품을 만들고 싶지 않을 것입니다.','그러면 새로운 노래와 이야기, 영화가 점점 줄어들고, 우리나라의 문화 산업도 발전하기 어렵습니다.'],
+ ['그렇다면 우리는 저작권을 지키기 위해 어떤 노력을 해야 할까요?','다른 사람의 글, 그림, 음악, 영상을 쓸 때에는 먼저 허락을 받습니다.','인터넷에서 가져온 자료도 출처를 꼭 밝힙니다.','실수로 저작권을 침해했다면 바로 인정하고 고쳐야 합니다.'],
+ ['저작권을 지키면 창작자의 권리를 보호할 수 있을 뿐 아니라, 모두가 공정하게 대우받는 사회를 만들 수 있습니다.','그러므로 우리 모두 저작권을 소중히 지켜야 합니다.']];
+
+const MISSIONS=[
+{id:'m1',num:'1',title:'저작권이 뭐야?',icon:'🛡️',desc:'밤새 그린 그림이 사라졌다! 저작권의 뜻을 알아내자.',badge:['🔰','저작권 새싹'],build:()=>[
+ D([{who:'chief',scene:SC.night,t:'얘들아! 누군가가 밤새 그림을 그렸는데,'},{who:'chief',scene:SC.steal,t:'다른 사람이 그 그림을 그대로 가져가서 자기 작품이라고 발표했어.'},{who:'chief',scene:SC.sad,t:'이건 괜찮을까? 수사관인 네가 판단해 줘!'}]),
+ Q({q:'밤새 그린 그림을 다른 사람이 그대로 가져가서 자기 작품이라고 발표했어. 괜찮을까?',pic:'🧒🎨➡️🦹🏆😢',opts:[{t:'괜찮아. 그림은 누구나 가져가도 돼.',icon:'🙆',fb:'그림을 그린 사람은 밤새 노력했어. 그 사람의 마음은 어떨까?'},{t:'안 돼! 그린 사람의 허락 없이 가져가서 자기 것이라고 하면 안 돼.',icon:'🙅',ok:1}],
+  exp:'맞아! 그 그림은 밤새 그린 사람의 작품이야. 허락 없이 가져가서 자기 것이라고 하면 안 돼.',hints:['🧒🌙🎨','허락, 누구의 작품','그림을 그린 사람이 이 장면을 보면 기분이 어떨까?','내 일기를 친구가 가져가서 자기가 썼다고 하면 어떨까?']}),
+ D([{who:'chief',scene:SC.shield,t:'이런 일을 막아 주는 힘이 바로 저작권이야!'},{who:'chief',scene:SC.think,t:'저작권은 사람이 자신의 생각이나 느낌을 표현하여 만든 창작물을 보호하는 권리야.'},{who:'chief',scene:SC.works,t:'노래, 그림, 글, 사진, 영상처럼 사람이 만든 다양한 창작물이 모두 보호받아.'},{who:'chief',scene:SC.respect,t:'그러니까 다른 사람의 창작물을 함부로 복사하거나 자기 것처럼 쓰면 안 돼. 창작자의 권리를 존중해야 해!'}]),
+ TapFind({q:'저작권으로 보호받는 창작물을 모두 찾아서 터치해!',items:[{icon:'🎵',t:'가수가 만든 노래',ok:1},{icon:'🎨',t:'친구가 그린 그림',ok:1},{icon:'📖',t:'작가가 쓴 동화',ok:1},{icon:'📷',t:'사진작가가 찍은 사진',ok:1},{icon:'🎬',t:'유튜버가 만든 영상',ok:1},{icon:'🪨',t:'길가의 돌멩이',fb:'돌멩이는 사람이 생각이나 느낌을 표현해서 만든 게 아니야.'},{icon:'☁️',t:'하늘의 구름',fb:'구름은 자연이 만든 거야. 사람의 창작물이 아니야.'},{icon:'🌳',t:'공원의 나무',fb:'나무는 자연이야. 저작권은 사람이 만든 창작물을 보호해.'}],
+  exp:'노래, 그림, 글, 사진, 영상! 사람이 생각이나 느낌을 표현해서 만든 창작물은 모두 저작권으로 보호받아.',hints:['🧠➡️🖼️','사람이 만든 것','저작권은 사람이 생각이나 느낌을 표현해 만든 창작물을 보호해. 자연물은 아니야.','내가 그린 그림은 창작물, 내가 주운 돌멩이는 창작물이 아니야.']}),
+ Sort({q:'행동 카드를 끌어서 알맞은 상자에 놓아 보자!',bins:[BIN_OK,BIN_X],cards:[{t:'만든 사람에게 허락을 받아요',icon:'🙋',bin:'r',why:'허락받기는 창작자를 존중하는 첫걸음!'},{t:'출처를 밝혀요',icon:'📝',bin:'r',why:'누가 만들었는지 밝히는 건 존중이야.'},{t:'몰래 복사해서 나눠 줘요',icon:'📠',bin:'x',concept:'copy',why:'몰래 복사는 침해야!',hint:'몰래 복사하면 만든 사람은 어떻게 될까?'},{t:'남의 그림을 내 것이라고 해요',icon:'🤥',bin:'x',concept:'photo',why:'남의 작품을 내 것이라고 하면 침해야!',hint:'그 그림은 누가 만들었지?'},{t:'내 생각으로 새로 만들어요',icon:'💡',bin:'r',why:'나만의 생각으로 만드는 건 멋진 창작!'}]}),
+ W({key:'whatIs',q:'저작권은 무엇일까? 내 말로 한 문장으로 써 보자!',starter:'저작권은 ',min:8,keys:['창작물','권리','보호','허락'],chips:['생각이나 느낌을','표현해 만든','창작물을','보호하는 권리'],tip:"'창작물', '권리' 같은 낱말을 넣으면 더 멋져!"})]},
+
+{id:'m2',num:'2',title:'저작권이 왜 필요할까?',icon:'🌍',desc:'두 개의 세계를 직접 탐험하고 비교하자.',badge:['🌍','두 세계 탐험가'],build:()=>[
+ D([{who:'chief',scene:SC.portal,t:'이번에는 신기한 차원의 문 두 개를 발견했어!'},{who:'chief',t:'하나는 저작권이 지켜지는 세계, 하나는 저작권이 지켜지지 않는 세계야. 직접 들어가서 비교해 보자!'}]),
+ Worlds(),
+ Sort({q:'이 장면은 어느 세계의 모습일까? 카드를 알맞은 세계로 옮겨 봐!',bins:[{key:'A',label:'🌈 지켜지는 세계',bg:'linear-gradient(140deg,#ff9fd2,#ffd23f)'},{key:'B',label:'🌫️ 지켜지지 않는 세계',bg:'linear-gradient(140deg,#8d8a99,#b5b3bf)'}],
+  cards:[{t:'창작자가 인정받아요',icon:'🏆',bin:'A'},{t:'새 노래가 계속 나와요',icon:'🎶',bin:'A'},{t:'문화 산업이 발전해요',icon:'📈',bin:'A'},{t:'창작 의욕을 잃어요',icon:'😞',bin:'B'},{t:'남이 내 노래를 자기 거래요',icon:'📢',bin:'B'},{t:'새 콘텐츠가 줄어요',icon:'📉',bin:'B'}]}),
+ Q({q:'만약 세상에서 새로운 노래나 이야기가 더 이상 만들어지지 않는다면, 우리 생활은 어떻게 될까?',pic:'📺❌🎵❌📚❌',opts:[{t:'새로운 노래, 영화, 책이 없어서 심심하고 재미없어져요.',icon:'😐',ok:1},{t:'아무 변화도 없어요.',icon:'🤷',fb:'좋아하는 노래나 책이 더 이상 안 나온다면 정말 아무렇지 않을까?'},{t:'새 노래가 저절로 생겨나요.',icon:'🪄',fb:'노래는 사람이 만들어야 생겨나. 저절로 생기지 않아!'}],
+  exp:'맞아! 새로운 작품이 없으면 우리 생활이 재미없어지고, 문화도 발전할 수 없어.',hints:['🎵❌','새로운 작품','창작자가 만들지 않으면 새로운 노래와 이야기도 없어.','좋아하는 만화의 다음 편이 영영 안 나온다면?']}),
+ TapFind({q:'저작권을 잘 지키면 우리 사회에는 어떤 변화가 생길까? 알맞은 변화를 모두 골라 봐!',items:[{icon:'🎨',t:'창작자가 신이 나서 더 많이 만들어요',ok:1},{icon:'✨',t:'새롭고 좋은 작품이 많아져요',ok:1},{icon:'📈',t:'문화 산업이 발전해요',ok:1},{icon:'⚖️',t:'모두가 공정하게 대우받아요',ok:1},{icon:'🚫',t:'아무도 그림을 그리지 않아요',fb:'그건 저작권이 지켜지지 않을 때의 모습이야.'},{icon:'🦹',t:'남의 작품을 마음대로 써도 돼요',fb:'저작권을 지키면 남의 작품을 마음대로 쓸 수 없어.'}],save:'societyPick'}),
+ W({key:'society',q:'저작권을 잘 지키면 우리 사회에는 어떤 변화가 생길까? 내 생각을 문장으로 완성해 보자!',starter:'저작권을 잘 지키면 ',min:10,keys:['발전','창작','공정','새로운'],chips:['창작자가 더 열심히 만들어서','새로운 작품이 많아지고','문화 산업이 발전해요','모두가 공정하게 대우받아요']})]},
+
+{id:'m3',num:'3',title:'저작권 사건 수사',icon:'🔍',desc:'다섯 개의 사건 파일! 단서를 모아 판단하자.',badge:['🕵️','명탐정'],skin:'mint',build:()=>[
+ D([{who:'chief',scene:SC.detective,t:'긴급 출동! 저작권 수사 본부에 사건 파일 다섯 개가 도착했어.'},{who:'chief',t:'장면을 하나씩 터치해서 등장인물의 행동을 관찰하고, 단서를 모은 뒤 판단해 줘. 틀려도 괜찮아. 단서를 다시 보고 도전하면 돼!'}]),
+ ...CASES.map(c=>Case(c)),
+ Sort({q:'사건 정리! 카드를 「침해」와 「괜찮아」로 분류해 봐.',bins:[{key:'x',label:'🚨 저작권 침해',bg:'linear-gradient(160deg,#ff8ac4,#ff4f6f)'},{key:'r',label:'✅ 괜찮아요',bg:'linear-gradient(160deg,#5ff5d2,#1fcaa2)'}],
+  cards:[{t:'친구 그림을 허락 없이 찍어 내 작품이라고 올리기',icon:'📸',bin:'x',concept:'photo'},{t:'인터넷 노래를 출처·허락 없이 영상에 쓰기',icon:'🎵',bin:'x',concept:'music'},{t:'친구 이야기를 그대로 베껴 쓰기',icon:'📒',bin:'x',concept:'copy'},{t:'그림을 보고 영감을 얻어 새 그림 그리기',icon:'💡',bin:'r',concept:'inspire'},{t:'허락을 받고 작품 사용하기',icon:'🙋',bin:'r',concept:'permit'},{t:'이용 허락된 사진을 쓰고 출처 밝히기',icon:'📝',bin:'r',concept:'permit'}]}),
+ ReviewInject(3),
+ D([{who:'chief',scene:SC.respect,t:'훌륭해, {name} 수사관! 핵심은 두 가지야. 만든 사람의 허락을 받았는지, 그리고 내 것처럼 꾸몄는지!'},{who:'chief',t:'영감을 얻어 나만의 새 작품을 만드는 건 괜찮지만, 남의 작품을 그대로 가져오는 건 침해야.'}])]},
+
+{id:'m4a',num:'4-1',title:'읽기 탐정단: 읽기 전',icon:'🔮',desc:'제목과 그림으로 글의 내용을 예상하자.',badge:['🔮','예상의 달인'],build:()=>[
+ D([{who:'chief',scene:SC.read,t:'읽기 탐정단 출동! 오늘 읽을 글은 「저작권을 왜 지켜야 하나요?」야.'},{who:'chief',t:'좋은 탐정은 글을 읽기 전에 먼저 살펴보고 예상해. 읽기 전, 읽기 중, 읽기 후 세 단계로 수사하자!'}]),
+ Observe(),
+ TapFind({q:'의견을 제시하는 글을 읽은 경험을 떠올려 봐! 다음 중 의견을 제시하는 글을 모두 골라 보자.',items:[{icon:'🚶',t:'복도에서 바르게 걷자고 주장하는 글',ok:1},{icon:'🗒️',t:'메모해야 하는 까닭을 알려 주는 글',ok:1},{icon:'📔',t:'어제 있었던 일을 쓴 일기',fb:'일기는 겪은 일을 쓴 글이야. 주장이 중심이 아니야.'},{icon:'🗺️',t:'동물원 안내 지도',fb:'안내 지도는 정보를 알려 주는 거야.'}],exp:'맞아! 무엇을 해야 한다고 자기 생각을 밝히는 글이 의견을 제시하는 글이야.'}),
+ Q({q:'제목과 그림을 보니, 이 글은 어떤 내용일 것 같아?',pic:'📌🖼️🔮',save:'predictPick',opts:[{t:'저작권을 지켜야 하는 까닭',icon:'❓',ok:1,fb:'좋은 예상이야! 제목이 「왜 지켜야 하나요?」였지.'},{t:'저작권을 지키는 방법',icon:'🛠️',ok:1,fb:'그럴듯한 예상이야! 읽으면서 확인해 보자.'},{t:'작품을 빼앗긴 사람의 마음',icon:'😢',ok:1,fb:'그림 속 친구를 잘 관찰했구나! 읽으면서 확인해 보자.'},{t:'맛있는 떡볶이 만드는 방법',icon:'🍢',fb:'제목과 그림에 떡볶이가 있었을까? 다시 살펴봐!'}]}),
+ W({key:'predict',q:'내 예상을 한 문장으로 써 보자!',starter:'이 글은 ',min:6,chips:['저작권을 지켜야 하는 까닭을','알려 주는 글일 것 같아요','저작권을 지키는 방법이 나올 것 같아요']}),
+ W({key:'experience',q:'내가 알고 있는 저작권 관련 경험을 떠올려 써 보자!',min:6,example:'과제를 할 때 인터넷에서 사진을 가져오면 반드시 출처를 밝혀야 해.',chips:['인터넷에서 사진을 가져온 적이 있어요','친구 그림을 따라 그린 적이 있어요','출처를 쓴 적이 있어요','노래를 영상에 넣은 적이 있어요']})]},
+
+{id:'m4b',num:'4-2',title:'읽기 탐정단: 읽기 중',icon:'📖',desc:'글을 읽으며 중요한 내용과 글쓴이의 의견을 찾자.',badge:['📖','집중 독서왕'],build:()=>[
+ D([{who:'chief',scene:SC.read,t:'이제 글을 읽을 차례야. 한 문단씩 읽으면서 중요한 문장을 찾아보자.'},{who:'chief',t:'🔊 버튼을 누르면 글을 읽어 줘. 🐢 버튼은 천천히 읽어 줘!'}]),
+ Para({n:1,s:PASS[0]}),
+ Q({q:'내가 열심히 그린 그림을 친구가 허락 없이 가져가서 자기 이름으로 낸다면 기분이 어떨까?',opts:[{t:'속상해요',icon:'😢',ok:1,fb:'맞아. 글쓴이도 그 마음을 말하며 글을 시작했어.'},{t:'억울해요',icon:'😤',ok:1,fb:'맞아. 내 노력이 빼앗긴 것 같아 억울하지.'},{t:'신나요',icon:'😆',fb:'정말 신날까? 내 작품을 빼앗긴 상황을 다시 떠올려 봐.'}]}),
+ Para({n:2,s:PASS[1],key:0,exp:'맞아! 저작권의 뜻을 알려 주는 이 문장이 핵심이야.',hints:['📖🛡️','저작권은 ~ 권리','이 문단은 저작권이 무엇인지 알려 주고 있어. 뜻을 설명하는 문장을 찾아봐.','"OO은 ~이다" 처럼 뜻을 알려 주는 문장이 핵심일 때가 많아.']}),
+ PredictCheck(),
+ Para({n:3,s:PASS[2],key:[1,2],exp:'맞아! 저작권을 지키지 않으면 창작이 줄고 문화가 발전하기 어렵다는 게 핵심이야.',hint:'질문 문장은 생각을 열어 주는 문장이야. 질문에 대한 대답을 찾아봐!',hints:['❓➡️💬','지키지 않으면','첫 문장은 질문이야. 그 질문의 답이 되는 문장을 골라 봐.','"어떻게 될까요?" 다음에 무슨 일이 일어난다고 했지?']}),
+ Para({n:4,s:PASS[3]}),
+ TapFind({q:'글쓴이가 말한, 저작권을 지키기 위한 노력을 모두 찾아 터치해!',items:[{icon:'🙋',t:'먼저 허락을 받아요',ok:1},{icon:'📝',t:'인터넷 자료도 출처를 밝혀요',ok:1},{icon:'🔧',t:'실수하면 바로 인정하고 고쳐요',ok:1},{icon:'📠',t:'몰래 복사해요',fb:'글에서는 반대로 말했어!'},{icon:'🤥',t:'남의 작품을 내 이름으로 내요',fb:'그건 저작권 침해야.'}],exp:'완벽해! 허락받기, 출처 밝히기, 실수는 바로 고치기!'}),
+ Para({n:5,s:PASS[4],key:1,exp:'정답! 이 문장이 바로 글쓴이의 의견(주장)이야. 「~해야 합니다」로 끝나지?',hint:'글쓴이가 우리에게 「~해야 한다」고 주장하는 문장을 찾아봐!',hints:['📣','~해야 합니다','의견을 제시하는 글에서 글쓴이의 의견은 주로 「~해야 한다」로 나타나.','"복도에서 바르게 걸어야 합니다." 처럼!']}),
+ Sort({q:'중요한 정보 골라내기! 글에 나온 내용과 글에 없는 내용을 나눠 보자.',bins:[{key:'in',label:'📖 글에 나온 중요한 정보',bg:'linear-gradient(160deg,#7aa0ff,#2f5bff)'},{key:'out',label:'❌ 글에 없는 내용',bg:'linear-gradient(160deg,#b5b3bf,#8d8a99)'}],
+  cards:[{t:'저작권은 창작물을 보호하는 권리예요',icon:'🛡️',bin:'in'},{t:'남의 작품을 쓸 때는 허락을 받아요',icon:'🙋',bin:'in'},{t:'인터넷 자료는 출처를 밝혀요',icon:'📝',bin:'in'},{t:'저작권을 안 지키면 문화 산업이 발전하기 어려워요',icon:'📉',bin:'in'},{t:'저작권은 어른만 지키면 돼요',icon:'🧓',bin:'out',hint:'글에서 그런 말이 나왔을까? 우리 모두 지켜야 한다고 했어.'},{t:'인터넷 자료는 마음대로 써도 돼요',icon:'🆓',bin:'out',hint:'글에서는 인터넷 자료도 출처를 밝히라고 했어.'}]})]},
+
+{id:'m4c',num:'4-3',title:'읽기 탐정단: 읽기 후',icon:'📝',desc:'중심 내용을 정리하고 내 생각을 표현하자.',badge:['📝','생각 정리왕'],build:()=>[
+ D([{who:'chief',scene:SC.read,t:'다 읽었구나! 이제 읽은 내용을 정리하고, 내 생각을 표현할 차례야.'}]),
+ Order({q:'글의 흐름 순서대로 카드를 1번부터 놓아 보자!',items:['내 작품을 친구가 가져가면 속상하고 억울해요.','저작권은 창작물을 보호하는 권리예요.','저작권을 지키지 않으면 새 작품이 줄고 문화 산업이 발전하기 어려워요.','허락을 받고, 출처를 밝히고, 실수는 바로 고쳐요.','저작권을 지켜 공정한 사회를 만들어요.'],exp:'완벽해! 경험 → 뜻 → 까닭 → 노력 → 주장 순서로 글이 이어져.',hints:['1️⃣2️⃣3️⃣','처음, 가운데, 끝','글은 상황 이야기로 시작해서, 마지막에 글쓴이의 주장으로 끝나.','처음: 속상한 상황, 끝: 그러므로 지켜야 해요!']}),
+ Q({q:'이 글의 중심 내용으로 가장 알맞은 것은?',opts:[{t:'저작권은 창작자의 권리를 보호하고 공정한 사회를 만들기 때문에 꼭 지켜야 한다.',icon:'🎯',ok:1},{t:'그림을 잘 그리는 방법을 알려 준다.',icon:'🖌️',fb:'그림 그리는 방법은 글에 나오지 않았어.'},{t:'인터넷 자료는 마음대로 써도 된다.',icon:'🆓',fb:'글과 반대되는 내용이야!'},{t:'친구가 칭찬을 받으면 억울하다.',icon:'😤',fb:'글의 일부분이지만 글 전체를 대표하지는 않아.'}],exp:'정답! 글 전체를 한 문장으로 줄이면 바로 이거야.',hints:['📄➡️🎯','전체를 대표','중심 내용은 글의 일부분이 아니라 글 전체를 한마디로 줄인 거야.','마지막 문단의 주장과 그 까닭을 합쳐 봐!']}),
+ W({key:'why',q:'저작권을 지켜야 하는 까닭은 무엇인가요? 글을 바탕으로 써 보자.',min:10,keys:['창작자','권리','발전','공정','의욕'],chips:['창작자의 권리를 보호하고','새로운 작품이 계속 만들어지고','문화 산업이 발전하며','공정한 사회를 만들 수 있기 때문이에요']}),
+ W({key:'learned',q:'글을 읽고 새롭게 알게 된 점을 써 보자!',min:6,chips:['인터넷 자료도 출처를 밝혀야 한다는 것','저작권이 창작물을 보호하는 권리라는 것','실수하면 바로 고쳐야 한다는 것']}),
+ Q({q:'「우리 모두 저작권을 소중히 지켜야 한다」는 글쓴이의 의견에 대한 내 생각은?',save:'agree',opts:[{t:'글쓴이의 의견에 찬성해요.',icon:'👍',ok:1,fb:'좋아! 왜 그렇게 생각하는지 다음에서 까닭을 써 보자.'},{t:'찬성하지만, 조금 다른 생각도 있어요.',icon:'🤔',ok:1,fb:'멋진 태도야! 내 생각을 자유롭게 써 보자.'}]}),
+ W({key:'myOpinion',q:'글쓴이와 나의 의견을 비교해서, 내 생각과 그 까닭을 써 보자.',starter:'나는 글쓴이의 의견에 ',min:12,keys:['왜냐하면','때문'],tip:"'왜냐하면 ~ 때문이에요'를 넣으면 까닭이 더 분명해져!",chips:['찬성해요.','왜냐하면','때문이에요.']}),
+ Reflect()]},
+
+{id:'m5',num:'5',title:'단어 조각 공장',icon:'🏭',desc:'창작·발전·침해! 글자 조각으로 낱말을 조립하자.',badge:['🏭','낱말 장인'],build:()=>[
+ D([{who:'chief',scene:SC.factory,t:'여기는 단어 조각 공장! 복제 바이러스 때문에 낱말이 조각조각 흩어졌어.'},{who:'chief',t:'오늘의 낱말은 창작, 발전, 침해야. 뜻을 익히고 조각을 맞춰서 낱말을 되살리자!'}]),
+ WordLab(),
+ Assemble({q:'보기의 글자 카드를 보고, 문장의 빈칸에 들어갈 낱말을 조립해 봐!',board:'✋ 글자 카드를 끌어서 네모 칸에 한 글자씩 넣어요. (필요 없는 글자도 섞여 있어요!)',pool:['스','피','해','이','래','창','광','작','터','발','코','전','침'],
+  items:[{pre:'(1) 다른 사람이 ',ans:['창','작'],post:'한 작품을 인정하고 보호해 주어야 해.',mean:'예술 작품을 독창적으로 지어냄. 방안이나 물건 따위를 처음으로 만들어 냄.'},{pre:'(2) 저작권을 잘 지키면 우리나라 문화 산업이 ',ans:['발','전'],post:'할 수 있어.',mean:'더 낫고 좋은 상태나 더 높은 단계로 나아감.'},{pre:'(3) 다른 사람의 권리를 ',ans:['침','해'],post:'해서는 안 돼.',mean:'침범하여 해를 끼침.'}],
+  hints:['🎨📈🚫','창작 · 발전 · 침해','뜻풀이를 읽고 어울리는 낱말을 떠올려 봐. 처음 만드는 것, 좋아지는 것, 해를 끼치는 것!','"나만의 동화를 ○○했어요"에 들어갈 말은?']}),
+ Assemble({q:'새로운 문장에도 낱말 카드를 넣어 보자! 이번엔 낱말 통째로!',word:1,pool:['창작','발전','침해'],
+  items:[{pre:'친구의 글을 몰래 베끼는 것은 저작권 ',ans:['침해'],post:'예요.'},{pre:'나는 내 생각으로 새로운 노래를 ',ans:['창작'],post:'했어요.'},{pre:'과학 기술이 ',ans:['발전'],post:'하면 생활이 편리해져요.'}]}),
+ Assemble({q:'자모 조각 조립! 자음과 모음 조각을 순서대로 넣어서 「침해」를 완성해 봐.',board:'✋ 「침」은 ㅊ+ㅣ+ㅁ, 「해」는 ㅎ+ㅐ 로 만들어져요.',pool:['ㅊ','ㅣ','ㅁ','ㅎ','ㅐ','ㅂ','ㅏ','ㅇ'],items:[{pre:'침해 = ',ans:['ㅊ','ㅣ','ㅁ','ㅎ','ㅐ'],post:'',mean:'침범하여 해를 끼침.'}]}),
+ W({key:'wordSentence',q:'창작, 발전, 침해 중에서 하나를 골라 나만의 문장을 만들어 보자!',min:6,must:['창작','발전','침해'],chips:['창작','발전','침해']})]},
+
+{id:'m6',num:'6',title:'나도 창작자!',icon:'🎨',desc:'창작 스튜디오에서 나만의 작품 카드를 만들자.',badge:['🎨','진짜 창작자'],skin:'artist',build:()=>[
+ D([{who:'chief',scene:SC.studio,t:'이번엔 네가 직접 창작자가 되어 볼 시간이야!'},{who:'chief',t:'창작 스튜디오에서 그림을 그리고, 제목과 설명을 붙여서 나만의 작품 카드를 만들어 봐.'}]),
+ Studio(),
+ Q({q:'이 작품은 누가 만들었나요?',opts:[{t:'{name}',icon:'🙋',ok:1},{t:'복제 바이러스',icon:'🦠',fb:'바이러스는 아무것도 만들지 않았어!'},{t:'부엉 반장',icon:'🦉',fb:'반장님은 구경만 했는걸?'},{t:'아무도 아니에요',icon:'❔',fb:'분명히 누군가 열심히 그렸잖아!'}],exp:'맞아! 이 작품은 {name} 창작자가 만들었어. 그래서 이 작품의 저작권은 너에게 있어.'}),
+ Q({q:'다른 사람이 이 작품을 사용하고 싶다면 어떻게 해야 할까요?',opts:[{t:'만든 사람인 나에게 먼저 허락을 받아요.',icon:'🙋',ok:1},{t:'그냥 가져가서 써요.',icon:'🦹',fb:'내 작품을 누가 그냥 가져가면 기분이 어떨까?'},{t:'자기 이름으로 바꿔서 써요.',icon:'🤥',fb:'그건 저작권 침해야!'}],exp:'정답! 허락을 받고, 누가 만들었는지 밝히고 써야 해.'}),
+ D([{who:'virus',scene:SC.thief,t:'크크크! 멋진 작품이군. 이건 이제 내 거다! 내 이름으로 바꿔 버려야지!'},{who:'chief',t:'앗! 바이러스가 네 작품을 훔쳐 가려고 해!'}]),
+ Q({q:'내가 만든 작품을 누군가 허락 없이 가져가서 자기 것이라고 한다면, 기분이 어떨까?',opts:[{t:'속상하고 억울해요',icon:'😢',ok:1},{t:'화가 나요',icon:'😠',ok:1},{t:'다시는 그리고 싶지 않아요',icon:'😞',ok:1,fb:'그래, 바로 그 마음 때문에 창작자들이 창작 의욕을 잃는 거야.'}],exp:'그 마음이 바로 창작자의 마음이야. 저작권은 이런 일이 생기지 않도록 창작자의 권리를 지켜 줘!'}),
+ D([{who:'chief',scene:SC.shield,t:'걱정 마! 저작권 방패 발동! 네 작품에는 네 이름이 새겨져 있어서 바이러스가 가져갈 수 없어.'},{who:'virus',t:'으악! 허락 없이는 못 가져가잖아! 두고 보자!'}]),
+ GalleryShow(),
+ W({key:'pledge',q:'일상생활에서 저작권을 지키기 위해 내가 실천할 수 있는 일을 써 보자!',example:'과제를 할 때 인터넷에서 사진을 가져오면 반드시 출처를 밝혀야 해.',min:8,keys:['허락','출처'],chips:['다른 사람의 작품을 쓸 때 허락을 받을게요','인터넷 자료의 출처를 밝힐게요','친구의 작품을 존중할게요']})]},
+
+{id:'m7',num:'7',title:'최종 보스: 복제 바이러스',icon:'👾',desc:'배운 모든 힘을 모아 카피몬을 정화하자!',badge:['🏆','저작권 수호자'],skin:'gold',boss:1,build:()=>{
+ const ws=Object.keys(S.weak).filter(k=>S.weak[k]>0&&ALT[k]);const ck=ws.length?ws.sort((a,b)=>S.weak[b]-S.weak[a])[0]:pick(Object.keys(ALT));
+ const atk=[
+  Q({q:'모둠 발표 자료에 인터넷에서 찾은 그림을 넣고 싶어. 어떻게 해야 할까?',opts:[{t:'이용 허락을 확인하고, 출처를 꼭 밝혀요.',icon:'📝',ok:1},{t:'마음에 들면 그냥 넣어요.',icon:'😎',fb:'인터넷 그림에도 만든 사람이 있어!'},{t:'그림 크기를 바꾸면 내 그림이 돼요.',icon:'↔️',fb:'크기를 바꿔도 남의 그림이야.'}],hints:['💻🖼️📝','허락, 출처','인터넷 자료도 만든 사람이 있으니 허락을 확인하고 출처를 밝혀야 해.','책을 인용할 때 책 제목과 작가를 쓰는 것과 같아.']}),
+  Q({q:'그림을 보고 골라! 저작권을 지킨 장면은 어느 것일까?',big:1,opts:[{t:'"네 그림 써도 될까?" 먼저 물어봐요',icon:'🙋✉️',ok:1},{t:'책을 통째로 복사해서 팔아요',icon:'📠📚',fb:'허락 없이 복사해서 파는 건 침해야!'},{t:'친구 그림에 내 이름을 써요',icon:'🤥🖼️',fb:'남의 작품에 내 이름을 쓰면 안 돼!'},{t:'남의 노래를 몰래 영상에 넣어요',icon:'🎵📹',fb:'허락 없이 노래를 쓰면 침해야!'}]}),
+  Assemble({q:'글자 조각을 조립해서 문장을 완성해!',pool:['침','해','창','발','피','작'],items:[{pre:'남의 작품을 허락 없이 쓰면 저작권 ',ans:['침','해'],post:'예요.',mean:'침범하여 해를 끼침.'}]}),
+  Assemble({q:'알맞은 낱말 카드를 넣어 문장을 완성해!',word:1,pool:['창작','발전','침해'],items:[{pre:'저작권을 잘 지키면 문화 산업이 ',ans:['발전'],post:'할 수 있어요.',mean:'더 낫고 좋은 상태나 더 높은 단계로 나아감.'}]}),
+  Order({q:'다른 사람의 작품을 올바르게 사용하는 순서를 맞혀!',items:['쓰고 싶은 작품을 찾아요.','누가 만들었는지 확인해요.','만든 사람에게 허락을 요청해요.','허락을 받으면 출처를 밝히고 사용해요.'],hints:['🔍➡️🙋➡️📝','확인 → 허락 → 출처','먼저 누가 만들었는지 알아야 그 사람에게 허락을 구할 수 있어.','친구 물건을 빌릴 때도 누구 건지 알고 → 물어보고 → 빌리지!']}),
+  TapFind({q:'바이러스에게 조종당한 친구를 찾아라! 틀린 행동을 하는 친구를 터치해!',items:[{icon:'👦📝',t:'자료 아래에 출처를 써요',fb:'이건 올바른 행동이야!'},{icon:'👧📠',t:'친구의 독후감을 복사해서 자기 이름으로 내요',ok:1},{icon:'🧒🙋',t:'사진을 쓰기 전에 작가에게 허락을 구해요',fb:'이건 올바른 행동이야!'},{icon:'👩🎨',t:'영감을 얻어 나만의 그림을 그려요',fb:'나만의 새 작품을 만드는 건 괜찮아!'}],exp:'찾았다! 남의 글을 복사해 자기 이름으로 내는 건 저작권 침해야.'}),
+  Case(pick(ALT[ck]),true),
+  W({key:'final',q:'마지막 공격! 저작권을 왜 지켜야 할까? 네 생각을 써서 정화 빔을 완성해!',min:12,keys:['창작','권리','허락','출처','발전','공정'],chips:['창작자의 권리를 지키기 위해','새로운 작품이 계속 만들어지도록','허락을 받고 출처를 밝혀요']})];
+ return[D([{who:'virus',scene:SC.boss,t:'크하하! 여기까지 오다니! 나는 복제 바이러스 카피몬이다!'},{who:'virus',t:'복사! 붙여넣기! 내 문제를 모두 풀지 못하면 세상의 모든 작품은 내 것이 된다!'},{who:'chief',t:'{name} 수사관, 지금까지 배운 모든 힘을 모아! 정답을 맞힐 때마다 정화 빔이 발사될 거야!'}]),...atk.map((f,i)=>BossWrap(f,i,atk.length)),Victory()];}}];
+
+/* ================= 화면 ================= */
+let RUN=null;
+const BADGE_EXTRA={combo5:['🔥','콤보 마스터']};
+function setScreen(el){const s=$('#screen');s.innerHTML='';s.append(el);s.scrollTop=0;SEL=null;}
+const doneCount=()=>MISSIONS.filter(m=>S.done[m.id]).length;
+const starTotal=()=>Object.values(S.stars).reduce((a,b)=>a+b,0);
+const acc=()=>S.stats.t?Math.round(S.stats.c/S.stats.t*100):0;
+const nextMission=()=>MISSIONS.find((m,i)=>!S.done[m.id]&&unlocked(i));
+const unlocked=i=>i===0||!!S.done[MISSIONS[i-1].id];
+
+function renderHUD(){const hud=$('#hud');if(hud.classList.contains('hidden'))return;hud.innerHTML='';const xpIn=S.xp%XP_PER;
+ hud.append(h('div',{class:'hud-av'},playerSVG(S.skin)),h('div',{class:'hud-name'},(S.name||'신입')+' 수사관',h('small',{},rank())),h('span',{class:'lv'},'Lv.'+level()),
+  h('div',{class:'xpwrap'},h('div',{class:'xpbar'},h('i',{style:`width:${xpIn/XP_PER*100}%`})),h('div',{class:'xptxt'},`XP ${xpIn}/${XP_PER}`)),
+  h('span',{class:'pill',id:'hudCoin'},'🪙 '+S.coins),h('span',{class:'pill'},'⭐ '+starTotal()),combo>=2?h('span',{class:'pill combo'},'🔥 x'+combo):null,
+  h('span',{class:'pill opt',title:'정답률'},'🎯 '+acc()+'%'),h('span',{class:'pill opt',title:'미션 진행'},'🗺️ '+doneCount()+'/'+MISSIONS.length),h('div',{class:'hud-sp'}),
+  h('button',{class:'hbtn',title:'다시 듣기',onclick:()=>speak(lastSay)},'🔁'),h('button',{class:'hbtn'+(S.slow?' on':''),title:'천천히 듣기 모드',onclick:()=>{S.slow=!S.slow;save();renderHUD();toast(S.slow?'🐢 천천히 읽어 주기 켬':'🐇 보통 빠르기로 읽어 주기');}},'🐢'),
+  h('button',{class:'hbtn',title:'컬렉션',onclick:()=>RUN?confirmExit(showCollection):showCollection()},'🏅'),h('button',{class:'hbtn',title:'설정',onclick:showSettings},'⚙️'),
+  h('button',{class:'hbtn',title:'지도',onclick:()=>RUN?confirmExit(showMap):showMap()},'🗺️'));}
+function hudOn(){$('#hud').classList.remove('hidden');renderHUD();}
+
+function showTitle(){RUN=null;$('#hud').classList.add('hidden');const nm=nextMission();const pct=Math.round(doneCount()/MISSIONS.length*100);
+ setScreen(h('div',{class:'title screen-in'},h('div',{class:'logo in'},h('div',{class:'logo1'},'COPYRIGHT'),h('div',{class:'logo2'},'HERO'),h('div',{class:'logo3'},'🛡️ 저작권 수호 작전')),
+  h('div',{class:'title-main'},h('div',{class:'hero-wrap'},playerSVG(S.skin,'bob'),h('br'),h('div',{class:'name-tag'},S.name?`${S.name} 수사관`:'신입 수사관 대기 중')),
+   h('div',{class:'panel tinfo'},h('div',{class:'trow'},h('span',{},'🎖️ 현재 레벨'),h('span',{class:'lv'},'Lv.'+level()+' '+rank())),h('div',{class:'trow'},h('span',{},'🪙 보유 코인'),h('span',{},S.coins)),h('div',{class:'trow'},h('span',{},'⭐ 모은 별'),h('span',{},starTotal())),
+    h('div',{class:'trow'},h('span',{},'🗺️ 게임 진행률'),h('span',{},pct+'%')),h('div',{class:'prog'},h('i',{style:`width:${pct}%`})),
+    h('div',{class:'today'},h('small',{},'🎯 오늘의 미션'),nm?`미션 ${nm.num}. ${nm.title}`:'모든 미션 완료! 컬렉션을 채워 봐!'))),
+  h('div',{class:'title-btns'},h('button',{class:'btn yellow huge pulse',onclick:onStart},'▶ START'),h('button',{class:'btn ghost big',onclick:()=>{hudOn();showCollection();}},'🏅 컬렉션'),h('button',{class:'btn ghost big',onclick:showSettings},'⚙️ 설정'))));}
+function onStart(){SFX.win();speak('코피라이트 히어로! 출동!');if(!S.name)askName(()=>startIntro());else if(!S.seenIntro)startIntro();else{hudOn();showMap();}}
+function askName(after){const inp=h('input',{class:'inp',maxlength:'8',placeholder:'예) 하늘',style:'text-align:center;font-size:1.8rem'});
+ const go=()=>{const v=inp.value.trim();if(!v){shakeEl(inp);toast('이름을 써 주세요!');return;}S.name=v;save();close();after();};inp.onkeydown=e=>{if(e.key==='Enter')go();};
+ const close=modal(h('div',{},h('div',{style:'width:9rem;margin:0 auto'},playerSVG(S.skin,'bob')),h('h2',{},'수사관 이름을 알려 줘!'),inp,h('div',{class:'mrow'},h('button',{class:'btn mint big',onclick:go},'✔ 등록하기'))),{closable:false});setTimeout(()=>inp.focus(),300);speak('수사관 이름을 알려 줘!');}
+function startIntro(){hudOn();const st=h('div',{class:'stage screen-in'});setScreen(h('div',{class:'mission'},h('div',{class:'mtop'},h('div',{class:'mtitle'},'📜 프롤로그: 복제 바이러스의 습격')),st));
+ D([{who:'chief',scene:SC.city,t:'반가워! 나는 저작권 수호국의 부엉 반장이야.'},{who:'chief',scene:SC.creators,t:'이 세상에는 노래, 그림, 이야기, 영상, 발명품을 만드는 창작자들이 살고 있어.'},
+  {who:'chief',scene:SC.virus,t:'그런데 어느 날 복제 바이러스가 퍼지기 시작했어! 다른 사람의 작품을 허락 없이 가져가서 자기 것처럼 쓰게 만드는 무시무시한 바이러스야.'},
+  {who:'chief',scene:SC.gray,t:'창작자들은 의욕을 잃고, 콘텐츠 세계는 점점 색을 잃어 가고 있어…'},{who:'virus',scene:SC.virus,t:'크크크! 복사! 붙여넣기! 이제 세상의 모든 작품은 내 거다!'},
+  {who:'chief',scene:SC.hero,t:'{name} 수사관! 너는 오늘부터 신입 저작권 수사관이야. 사건을 해결하고 세상의 색을 되찾아 줘!'},
+  {who:'chief',t:'미션을 해결할 때마다 경험치, 코인, 별, 뱃지를 얻을 수 있어. 최종 목표는 저작권 수호국의 최고 등급 요원이 되는 거야! 출동하자!',end:'🚀 출동!'}])(st,()=>{S.seenIntro=true;save();showMap();});}
+
+const POS=[[10,78],[27,52],[44,76],[58,46],[76,70],[90,42],[74,17],[50,20],[24,22]];
+function showMap(){RUN=null;hudOn();updateBG();const nm=nextMission();
+ const box=h('div',{class:'mapbox'});const pts=POS.map(p=>`${p[0]},${p[1]*.5625}`).join(' ');
+ box.innerHTML=`<svg class="path" viewBox="0 0 100 56.25" preserveAspectRatio="none"><polyline points="${pts}" fill="none" stroke="#ffffff55" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="2 1.6"/></svg>`;
+ MISSIONS.forEach((m,i)=>{const lk=!unlocked(i),dn=!!S.done[m.id],now=nm&&nm.id===m.id;const st=S.stars[m.id]||0;
+  const b=h('button',{class:'node'+(lk?' locked':'')+(dn?' done':'')+(now?' now':'')+(m.boss?' boss':''),style:`left:${POS[i][0]}%;top:${POS[i][1]}%`},now?h('span',{class:'nowtag'},'NEXT!'):null,
+   h('div',{class:'ncirc'},m.icon),h('div',{class:'nlbl'},h('small',{},'미션 '+m.num),m.title),dn?h('div',{class:'nstars'},'⭐'.repeat(st)+'☆'.repeat(3-st)):null);
+  b.onclick=()=>{SFX.tap();if(lk){shakeEl(b);toast('🔒 앞 미션을 먼저 해결하면 열려요!');speak('앞 미션을 먼저 해결하면 열려요!');return;}brief(m);};box.append(b);});
+ setScreen(h('div',{class:'screen-in'},h('div',{class:'maphead'},h('div',{class:'goal'},'🎯 다음 목표: ',nm?`미션 ${nm.num}. ${nm.title}`:'모든 미션 클리어! 🏆'),
+  h('div',{style:'display:flex;gap:.6rem'},S.done.m7?h('button',{class:'btn yellow sm',onclick:showEnding},'🏆 임명장'):null,h('button',{class:'btn ghost sm',onclick:showTitle},'🏠 처음 화면'))),box));
+ if(nm)autoSpeak(`다음 목표는 미션 ${nm.num}, ${nm.title}이야!`);}
+function brief(m){const close=modal(h('div',{},h('div',{style:'font-size:4.5rem'},m.icon),h('h2',{},`미션 ${m.num}. ${m.title}`),h('p',{style:'font-size:1.3rem;font-weight:700'},m.desc),
+ h('div',{class:'rlist'},h('span',{class:'ritem'},'✨ XP'),h('span',{class:'ritem'},'🪙 코인'),h('span',{class:'ritem'},m.badge[0]+' '+m.badge[1]),m.skin?h('span',{class:'ritem'},'👕 새 스킨'):null),
+ S.done[m.id]?h('p',{style:'font-weight:800;color:#12a585'},'✔ 이미 해결한 미션이야. 다시 도전해서 별을 더 모아 봐!'):null,
+ h('div',{class:'mrow'},h('button',{class:'btn ghost',onclick:()=>close()},'돌아가기'),h('button',{class:'btn pink big pulse',onclick:()=>{close();startMission(m);}},'🚀 출동!'))));speak(`미션 ${m.num}. ${m.title}. ${m.desc}`);}
+
+function startMission(m){combo=0;RUN={m,steps:m.build(),i:0,mistakes:0};renderStep();}
+function renderStep(){BOSSHIT=null;const st0=RUN.steps[RUN.i];const top=h('div',{class:'mtop'},h('button',{class:'btn ghost sm',onclick:()=>confirmExit(showMap)},'✖'),h('div',{class:'mtitle'},`${RUN.m.icon} 미션 ${RUN.m.num}. ${RUN.m.title}`),
+ h('div',{class:'dots'},RUN.steps.map((_,k)=>h('i',{class:k<RUN.i?'done':k===RUN.i?'now':''}))));const stage=h('div',{class:'stage screen-in'});setScreen(h('div',{class:'mission'},top,stage));renderHUD();
+ let called=false;const myRun=RUN;st0(stage,()=>{if(called||RUN!==myRun)return;called=true;RUN.i++;if(RUN.i<RUN.steps.length)renderStep();else finishMission();});}
+function confirmExit(after){if(!RUN){after();return;}const close=modal(h('div',{},h('div',{style:'font-size:4rem'},'🤔'),h('h2',{},'미션을 멈출까?'),h('p',{style:'font-size:1.2rem;font-weight:700'},'지금 그만두면 이 미션은 처음부터 다시 해야 해. (쓴 답변과 코인은 저장돼!)'),
+ h('div',{class:'mrow'},h('button',{class:'btn mint big',onclick:()=>close()},'계속할래!'),h('button',{class:'btn ghost',onclick:()=>{close();RUN=null;try{speechSynthesis.cancel();}catch(e){}after();}},'그만하기'))));}
+
+function finishMission(){const m=RUN.m,mis=RUN.mistakes;const stars=mis===0?3:mis<=3?2:1;const first=!S.done[m.id];S.done[m.id]=true;S.stars[m.id]=Math.max(S.stars[m.id]||0,stars);
+ const xp=first?60:20,coin=first?40:15;addXP(xp);addCoins(coin);let nb=null,ns=null;if(!S.badges.includes(m.id)){S.badges.push(m.id);nb=m.badge;}if(m.skin&&!S.skins.includes(m.skin)){S.skins.push(m.skin);ns=SKINS.find(s=>s.id===m.skin);}
+ save();RUN=null;updateBG();renderHUD();SFX.win();const idx=MISSIONS.indexOf(m);const nxt=MISSIONS[idx+1];
+ const list=h('div',{class:'rlist'});const btns=h('div',{class:'title-btns',style:'visibility:hidden'});
+ const chest=h('button',{class:'chest'},'🎁');chest.onclick=()=>{if(chest.classList.contains('open'))return;chest.classList.add('open');chest.textContent='🎉';SFX.win();const[x,y]=rectC(chest);burst(x,y,60,['🪙','💎','⭐','✨']);
+  [`✨ +${xp} XP`,`🪙 +${coin} 코인`,nb?`${nb[0]} 새 뱃지: ${nb[1]}`:null,ns?`👕 새 스킨: ${ns.name}`:null].filter(Boolean).forEach((t,i)=>list.append(h('span',{class:'ritem',style:`animation-delay:${i*.2}s`},t)));
+  speak(`보물상자 오픈! 경험치 ${xp}, 코인 ${coin}개 획득!`+(nb?` 새 뱃지 ${nb[1]}!`:'')+(ns?` 새 스킨 ${ns.name}!`:''));btns.style.visibility='visible';};
+ btns.append(h('button',{class:'btn ghost big',onclick:showMap},'🗺️ 지도로'),m.id==='m7'?h('button',{class:'btn yellow big pulse',onclick:showEnding},'🏆 엔딩 보기'):nxt?h('button',{class:'btn mint big pulse',onclick:()=>startMission(nxt)},`▶ 다음: 미션 ${nxt.num}`):null);
+ setScreen(h('div',{class:'reward screen-in'},h('div',{class:'clear-t in'},'MISSION CLEAR!'),h('div',{style:'color:#fff;font-weight:900;font-size:1.4rem'},`미션 ${m.num}. ${m.title}`),
+  h('div',{class:'bigstars'},[0,1,2].map(i=>h('span',{class:i<stars?'':'off',style:`animation-delay:${.3+i*.25}s`},'⭐'))),h('div',{style:'color:#fff;font-weight:800'},mis===0?'실수 없이 완벽하게 해결!':`실수 ${mis}번 — 다시 도전하면 별을 더 모을 수 있어!`),
+  chest,h('div',{style:'color:#fff;font-weight:900'},'👆 보물상자를 터치해!'),list,btns));
+ setTimeout(()=>burst(innerWidth/2,innerHeight*.25,50),300);speak(`미션 클리어! 별 ${stars}개! 보물상자를 터치해 봐!`);}
+
+function showCollection(tab='badge'){RUN=null;hudOn();const body=h('div');const tabs=h('div',{class:'tabs'});
+ const T=[['badge','🏅 뱃지'],['skin','👕 스킨'],['gallery','🖼️ 갤러리'],['notes','📒 답변 노트'],['stats','📊 기록']];
+ T.forEach(([k,l])=>tabs.append(h('button',{class:'tab'+(k===tab?' on':''),onclick:()=>showCollection(k)},l)));
+ if(tab==='badge'){body.append(h('div',{class:'bgrid'},[...MISSIONS.map(m=>[m.id,m.badge,`미션 ${m.num} 클리어`]),['combo5',BADGE_EXTRA.combo5,'5콤보 달성']].map(([id,b,how])=>h('div',{class:'badge'+(S.badges.includes(id)?'':' off')},h('div',{class:'bi'},b[0]),h('div',{},b[1]),h('small',{style:'opacity:.7'},how)))));}
+ if(tab==='skin'){body.append(h('div',{class:'bgrid'},SKINS.map(k=>{const own=S.skins.includes(k.id),on=S.skin===k.id;let b;
+  if(on)b=h('button',{class:'btn mint sm',disabled:'disabled'},'착용 중');else if(own)b=h('button',{class:'btn blue sm',onclick:()=>{S.skin=k.id;save();SFX.good();showCollection('skin');}},'입기');
+  else if(k.price)b=h('button',{class:'btn yellow sm',onclick:()=>{if(S.coins<k.price){toast(`🪙 코인이 ${k.price-S.coins}개 부족해요!`);SFX.bad();return;}S.coins-=k.price;S.skins.push(k.id);S.skin=k.id;save();SFX.win();burst(innerWidth/2,innerHeight/2,40,['🪙','✨']);showCollection('skin');}},`🪙 ${k.price} 구매`);
+  else b=h('div',{style:'font-size:.9rem;opacity:.7'},'🔒 '+k.unlock);return h('div',{class:'skin'+(on?' on':'')},playerSVG(k.id),h('div',{},k.name),b);})));}
+ if(tab==='gallery'){if(!S.gallery.length)body.append(h('p',{style:'font-size:1.3rem;font-weight:800'},'아직 작품이 없어요. 미션 6 「나도 창작자!」에서 작품을 만들어 보세요 🎨'));
+  else body.append(h('div',{class:'gallery'},S.gallery.map((a,i)=>h('div',{},artCard(a),h('button',{class:'btn ghost sm',style:'margin-top:.6rem',onclick:()=>{S.gallery.splice(i,1);save();showCollection('gallery');}},'🗑️ 내리기')))));}
+ if(tab==='notes'){const ks=Object.keys(S.answers).filter(k=>S.answers[k]&&S.answers[k].a!=null);if(!ks.length)body.append(h('p',{style:'font-size:1.3rem;font-weight:800'},'아직 저장된 답변이 없어요. 미션에서 쓴 답이 여기에 모여요 ✏️'));
+  ks.forEach(k=>{const a=S.answers[k];const ta=h('textarea',{class:'write'});ta.value=a.a;body.append(h('div',{class:'anote'},h('div',{class:'aq'},'Q. '+a.q),ta,h('div',{class:'wbar'},sayBtns(()=>ta.value),h('button',{class:'btn pink sm',onclick:()=>{if(!ta.value.trim()){toast('빈 답은 저장할 수 없어요');return;}a.a=ta.value.trim();save();SFX.good();toast('💾 답변을 수정했어요');}},'💾 수정 저장'))));});}
+ if(tab==='stats'){const ws=Object.keys(S.weak).filter(k=>S.weak[k]>0);body.append(h('div',{class:'statg'},h('div',{class:'stat'},h('b',{},acc()+'%'),'정답률'),h('div',{class:'stat'},h('b',{},S.stats.c+'/'+S.stats.t),'맞힌 문제'),h('div',{class:'stat'},h('b',{},doneCount()+'/'+MISSIONS.length),'미션 진행'),h('div',{class:'stat'},h('b',{},S.bestCombo),'최고 콤보'),h('div',{class:'stat'},h('b',{},starTotal()+'/'+MISSIONS.length*3),'모은 별')),
+  h('h3',{},'🔁 다시 연습할 개념'),ws.length?h('div',{class:'chips'},ws.map(k=>h('span',{class:'chip'},`${CONCEPT[k]||k} (${S.weak[k]})`))):h('p',{style:'font-weight:800'},'헷갈리는 개념이 없어요! 👍'),h('p',{class:'mean'},'헷갈린 개념은 다음 미션과 보스전에서 새로운 사건으로 다시 나와요.'));}
+ setScreen(h('div',{class:'stage screen-in',style:'margin-top:1rem'},h('div',{class:'qhead'},h('div',{class:'qtext'},'🏅 수사관 컬렉션'),h('button',{class:'btn ghost sm',onclick:showMap},'🗺️ 지도로')),tabs,body));}
+
+function showSettings(){const tg=(k,l)=>h('button',{class:'chk'+(S[k]?' on':''),onclick:e=>{S[k]=!S[k];save();const b=e.currentTarget;b.classList.toggle('on',S[k]);b.querySelector('.box').textContent=S[k]?'✔':'';renderHUD();SFX.tap();}},h('span',{class:'box'},S[k]?'✔':''),h('span',{},l));
+ let stage=0;const rb=h('button',{class:'btn red sm'},'🗑️ 처음부터 다시 하기');rb.onclick=()=>{if(stage===0){stage=1;rb.textContent='정말 지울까요? 한 번 더 누르면 모두 지워져요';return;}localStorage.removeItem(SKEY);S=load();combo=0;close();updateBG();showTitle();toast('처음 상태로 돌아갔어요');};
+ const ni=h('input',{class:'inp',maxlength:'8'});ni.value=S.name;
+ const close=modal(h('div',{style:'text-align:left'},h('h2',{style:'text-align:center'},'⚙️ 설정'),h('div',{class:'checks'},tg('voice','🔊 화면 글을 자동으로 읽어 주기'),tg('slow','🐢 천천히 읽어 주기'),tg('sound','🎵 효과음')),
+  h('p',{class:'mean'},'※ 음성이 나오지 않는 기기에서도 화면의 글(자막)로 모두 학습할 수 있어요.'),h('label',{style:'font-weight:900'},'수사관 이름'),h('div',{style:'display:flex;gap:.6rem;margin-top:.3rem'},ni,h('button',{class:'btn mint sm',onclick:()=>{if(ni.value.trim()){S.name=ni.value.trim();save();renderHUD();toast('이름을 바꿨어요');}}},'변경')),
+  h('div',{class:'mrow'},h('button',{class:'btn blue sm',onclick:()=>speak('안녕! 목소리 테스트야. 잘 들리니?')},'🔊 목소리 테스트'),rb),h('div',{class:'mrow'},h('button',{class:'btn mint big',onclick:()=>close()},'닫기'))));}
+
+function showEnding(){RUN=null;hudOn();const A=k=>S.answers[k]?S.answers[k].a:'(아직 쓰지 않았어요)';
+ setScreen(h('div',{class:'wrapc screen-in'},h('div',{class:'panel cert in'},h('div',{style:'font-size:4rem'},'🏆'),h('h1',{},'임 명 장'),h('div',{style:'width:9rem;margin:0 auto'},playerSVG(S.skin,'bob')),h('div',{class:'who'},`${S.name} 수사관`),
+  h('p',{},'위 수사관은 복제 바이러스 카피몬을 물리치고, 저작권이 무엇인지, 왜 지켜야 하는지, 다른 사람의 작품을 어떻게 존중해야 하는지 알게 되었으므로 ',h('b',{},'저작권 수호국 정식 요원'),'으로 임명합니다.'),
+  h('div',{class:'statg',style:'margin:1rem 0'},h('div',{class:'stat'},h('b',{},'Lv.'+level()),rank()),h('div',{class:'stat'},h('b',{},starTotal()+'⭐'),'모은 별'),h('div',{class:'stat'},h('b',{},acc()+'%'),'정답률'),h('div',{class:'stat'},h('b',{},S.badges.length+'개'),'뱃지')),
+  h('h2',{},'🗣️ 내 말로 설명하기'),h('div',{class:'myexp'},h('div',{},h('b',{},'① 저작권이란?'),A('whatIs')),h('div',{},h('b',{},'② 왜 지켜야 할까?'),A('why')),h('div',{},h('b',{},'③ 나의 생각'),A('final')),h('div',{},h('b',{},'④ 내가 실천할 일'),A('pledge'))),
+  h('p',{style:'font-size:1.1rem'},'친구나 가족에게 위의 내용을 소리 내어 설명해 보세요! (📒 답변 노트에서 고칠 수 있어요)'),
+  h('div',{class:'mrow'},h('button',{class:'btn mint big',onclick:showMap},'🗺️ 지도'),h('button',{class:'btn blue big',onclick:()=>showCollection('notes')},'📒 답변 노트'),h('button',{class:'btn ghost big',onclick:showTitle},'🏠 처음 화면')))));
+ SFX.win();let k=0;const iv=setInterval(()=>{burst(innerWidth*(.15+Math.random()*.7),innerHeight*(.15+Math.random()*.4),30,k%2?['🎉','✨','⭐','🌈']:null);if(++k>10)clearInterval(iv);},350);
+ speak(`축하해, ${S.name} 수사관! 너는 이제 저작권 수호국의 정식 요원이야! 세상에 다시 색이 돌아왔어!`);}
+
+/* ================= 시작 ================= */
+buildBG();showTitle();
+window.addEventListener('beforeunload',save);
+</script>
+</body>
+</html>
